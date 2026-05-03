@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Cipher</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Title</label>
+        <input name="title" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Ciphertext</label>
+        <textarea name="ciphertext" class="form-control" rows="6"></textarea>
+    </div>
+
+    <button class="btn btn-success">Save</button>
+</form>
+{% endblock %}

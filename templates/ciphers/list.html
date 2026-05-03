@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="mb-1">Ciphers</h1>
+        <p class="text-muted mb-0">
+            Explore submitted cipher messages and begin analyzing their patterns.
+        </p>
+    </div>
+
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('ciphers.add_cipher') }}" class="btn btn-primary">
+            Add Cipher
+        </a>
+    {% endif %}
+</div>
+
+{% if ciphers %}
+    <div class="list-group">
+        {% for c in ciphers %}
+            <a href="{{ url_for('ciphers.view_cipher', cipher_id=c.id) }}"
+               class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">{{ c.title }}</h5>
+                    <span class="badge bg-secondary">{{ c.status }}</span>
+                </div>
+
+                <p class="mb-1 text-monospace">
+                    {{ c.ciphertext[:160] }}{% if c.ciphertext|length > 160 %}...{% endif %}
+                </p>
+
+                <small class="text-muted">
+                    Type: {{ c.cipher_type or "Unknown" }} |
+                    Language: {{ c.suspected_language or "Unknown" }}
+                </small>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        No cipher messages have been added yet.
+        {% if current_user.is_authenticated %}
+            Add the first one to begin.
+        {% else %}
+            Log in to add one.
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

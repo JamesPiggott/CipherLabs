@@ -3,6 +3,7 @@ from flask_login import LoginManager
 
 from config import Config
 from core.users.processor.user_processor import UserProcessor
+from blueprints.ciphers.routes import ciphers_blueprint
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
@@ -25,6 +26,7 @@ def create_app():
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
+    app.register_blueprint(ciphers_blueprint, url_prefix="/ciphers")
 
     return app
 

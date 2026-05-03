@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('ciphers.list_ciphers') }}" class="btn btn-outline-secondary btn-sm">
+        ← Back to ciphers
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h1 class="card-title mb-2">{{ cipher.title }}</h1>
+                <p class="text-muted mb-0">
+                    Status: {{ cipher.status }} |
+                    Type: {{ cipher.cipher_type or "Unknown" }} |
+                    Language: {{ cipher.suspected_language or "Unknown" }}
+                </p>
+            </div>
+
+            <span class="badge bg-secondary">{{ cipher.status }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Ciphertext
+    </div>
+    <div class="card-body">
+        <pre class="mb-0" style="white-space: pre-wrap;">{{ cipher.ciphertext }}</pre>
+    </div>
+</div>
+
+{% if cipher.plaintext %}
+<div class="card mb-4">
+    <div class="card-header">
+        Plaintext
+    </div>
+    <div class="card-body">
+        <pre class="mb-0" style="white-space: pre-wrap;">{{ cipher.plaintext }}</pre>
+    </div>
+</div>
+{% endif %}
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        Basic Analysis
+    </div>
+
+    <div class="card-body">
+        <div class="row text-center">
+
+            <div class="col-md-2">
+                <h5>{{ basic_analysis.total_characters }}</h5>
+                <small class="text-muted">Characters</small>
+            </div>
+
+            <div class="col-md-2">
+                <h5>{{ basic_analysis.total_letters }}</h5>
+                <small class="text-muted">Letters</small>
+            </div>
+
+            <div class="col-md-2">
+                <h5>{{ basic_analysis.unique_letters }}</h5>
+                <small class="text-muted">Unique Letters</small>
+            </div>
+
+            <div class="col-md-2">
+                <h5>{{ basic_analysis.unique_symbols }}</h5>
+                <small class="text-muted">Symbols</small>
+            </div>
+
+            <div class="col-md-2">
+                <h5>
+                    {{ basic_analysis.most_common_letter or "-" }}
+                </h5>
+                <small class="text-muted">Most Common</small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Index of Coincidence
+    </div>
+
+    <div class="card-body">
+        <h4>{{ index_of_coincidence.value }}</h4>
+
+        <p class="mb-0 text-muted">
+            {{ index_of_coincidence.interpretation }}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Frequency Analysis
+    </div>
+
+    <div class="card-body">
+        <p>
+            Total letters analyzed:
+            <strong>{{ frequency_analysis.total_letters }}</strong>
+        </p>
+
+        {% if frequency_analysis.total_letters > 0 %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Letter</th>
+                            <th style="width: 100px;">Count</th>
+                            <th style="width: 120px;">Text %</th>
+                            <th>Relative frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in frequency_analysis.frequencies %}
+                            <tr>
+                                <td><strong>{{ item.letter }}</strong></td>
+                                <td>{{ item.count }}</td>
+                                <td>{{ item.percentage }}%</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="progress flex-grow-1" style="height: 22px;">
+                                            <div class="progress-bar"
+                                                 role="progressbar"
+                                                 style="width: {{ item.visual_percentage }}%;"
+                                                 aria-valuenow="{{ item.visual_percentage }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <small class="text-muted" style="width: 55px;">
+                                            {{ item.count }}
+                                        </small>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-muted small mb-0">
+                Bars are scaled relative to the most frequent letter in this ciphertext.
+                The percentage column shows the actual share of the analyzed text.
+            </p>
+        {% else %}
+            <p class="text-muted mb-0">
+                No alphabetic characters were found in this cipher.
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

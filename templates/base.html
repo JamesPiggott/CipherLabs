@@ -15,6 +15,8 @@
         <a class="navbar-brand" href="{{ url_for('main.index') }}">CipherLab</a>
 
         <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="{{ url_for('ciphers.list_ciphers') }}">Ciphers</a>
+
             {% if current_user.is_authenticated %}
                 <span class="navbar-text me-3">
                     {{ current_user.username }}
