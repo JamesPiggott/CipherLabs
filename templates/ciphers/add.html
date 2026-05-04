@@ -1,19 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('ciphers.list_ciphers') }}" class="btn btn-outline-secondary btn-sm">
+        ← Back to ciphers
+    </a>
+</div>
+
 <h1>Add Cipher</h1>
 
-<form method="post">
+<form method="post" class="mt-3">
+
     <div class="mb-3">
-        <label>Title</label>
-        <input name="title" class="form-control">
+        <label class="form-label">Title</label>
+        <input name="title" class="form-control" required>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+                <option value="unsolved">Unsolved</option>
+                <option value="partially solved">Partially solved</option>
+                <option value="solved">Solved</option>
+                <option value="disputed">Disputed</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Cipher Type</label>
+            <input name="cipher_type" class="form-control" placeholder="Caesar, Vigenère, substitution...">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Suspected Language</label>
+            <input name="suspected_language" class="form-control" placeholder="English, Dutch, Latin...">
+        </div>
     </div>
 
     <div class="mb-3">
-        <label>Ciphertext</label>
-        <textarea name="ciphertext" class="form-control" rows="6"></textarea>
+        <label class="form-label">Ciphertext</label>
+        <textarea name="ciphertext" class="form-control" rows="7" required></textarea>
     </div>
 
-    <button class="btn btn-success">Save</button>
+    <div class="mb-3">
+        <label class="form-label">Plaintext</label>
+        <textarea name="plaintext" class="form-control" rows="5" placeholder="Optional. Use this for solved ciphers."></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Source / Context</label>
+        <textarea name="source" class="form-control" rows="3" placeholder="Book, website, historical context, notes..."></textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button class="btn btn-success">Save Cipher</button>
+
+        <a href="{{ url_for('ciphers.list_ciphers') }}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+    </div>
 </form>
 {% endblock %}

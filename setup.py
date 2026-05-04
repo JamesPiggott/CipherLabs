@@ -1,6 +1,8 @@
 from app import create_app
 from core.users.database.user_database import UserDatabase
 from cipher.database.cipher_message_database import CipherMessageDatabase
+from cipher.database.user_workspace_database import UserWorkspaceDatabase
+
 
 def ensure_database_tables_exist():
     app = create_app()
@@ -8,6 +10,7 @@ def ensure_database_tables_exist():
     with app.app_context():
         UserDatabase().create_table()
         CipherMessageDatabase().create_table()
+        UserWorkspaceDatabase().create_table()
 
     print("Database tables checked successfully.")
 

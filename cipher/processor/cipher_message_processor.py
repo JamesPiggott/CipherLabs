@@ -7,7 +7,17 @@ class CipherMessageProcessor:
     def __init__(self):
         self.db = CipherMessageDatabase()
 
-    def create_cipher(self, title, ciphertext, user_id=None):
+    def create_cipher(
+            self,
+            title,
+            ciphertext,
+            user_id=None,
+            plaintext=None,
+            status="unsolved",
+            cipher_type=None,
+            suspected_language=None,
+            source=None,
+    ):
         if not title.strip():
             raise ValueError("Title required")
 
@@ -18,6 +28,11 @@ class CipherMessageProcessor:
             cipher_id=str(uuid.uuid4()),
             title=title.strip(),
             ciphertext=ciphertext.strip(),
+            plaintext=plaintext.strip() if plaintext else None,
+            status=status.strip() if status else "unsolved",
+            cipher_type=cipher_type.strip() if cipher_type else None,
+            suspected_language=suspected_language.strip() if suspected_language else None,
+            source=source.strip() if source else None,
             created_by=user_id,
         )
 
