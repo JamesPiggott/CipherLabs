@@ -1,0 +1,130 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Substitution Mapping Assistant
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted">
+            This uses word patterns to suggest possible plaintext letters for each cipher letter.
+            It is an assistant, not a guaranteed solver.
+        </p>
+
+        {% if not substitution_mapping_assistant.available %}
+            <div class="alert alert-warning mb-0">
+                {{ substitution_mapping_assistant.message }}
+            </div>
+        {% else %}
+            <p>
+                Solved letters:
+                <strong>{{ substitution_mapping_assistant.solved_count }}</strong> / 26
+            </p>
+
+            <div class="table-responsive mb-4">
+                <table class="table table-sm table-bordered align-middle">
+                    <thead>
+                        <tr>
+                            <th>Cipher Letter</th>
+                            <th>Possible Plain Letters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cipher_letter, possible_letters in substitution_mapping_assistant.mapping.items() %}
+                            <tr>
+                                <td><strong>{{ cipher_letter }}</strong></td>
+                                <td>
+                                    {% if possible_letters %}
+                                        {% for letter in possible_letters %}
+                                            <span class="badge bg-secondary me-1">{{ letter }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">Any</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if substitution_mapping_assistant.suggested_mappings %}
+                <div class="mb-4">
+                    <h6>Suggested Mappings</h6>
+
+                    <p class="text-muted small">
+                        These are heuristic suggestions based on ranked word candidates.
+                        Review them before saving.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for suggestion in substitution_mapping_assistant.suggested_mappings %}
+                            <button type="button"
+                                    class="btn btn-outline-success btn-sm apply-single-suggestion"
+                                    data-cipher-letter="{{ suggestion.cipher_letter }}"
+                                    data-plain-letter="{{ suggestion.plain_letter }}">
+                                {{ suggestion.cipher_letter }} → {{ suggestion.plain_letter }}
+                                <span class="text-muted">
+                                    {{ (suggestion.confidence * 100) | round | int }}%
+                                </span>
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <h6>Ranked Cipher Word Candidates</h6>
+
+            {% if substitution_mapping_assistant.matched_words %}
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>Cipher Word</th>
+                                <th>Pattern</th>
+                                <th>Candidates</th>
+                                <th>Best Guess</th>
+                                <th>Ranked Candidates</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in substitution_mapping_assistant.matched_words %}
+                                <tr>
+                                    <td><strong>{{ item.cipher_word }}</strong></td>
+                                    <td><code>{{ item.pattern }}</code></td>
+                                    <td>{{ item.candidate_count }}</td>
+                                    <td>
+                                        {% if item.best_candidate %}
+                                            <span class="badge bg-success">
+                                                {{ item.best_candidate.word }}
+                                            </span>
+                                            <small class="text-muted">
+                                                score {{ item.best_candidate.score }}
+                                            </small>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% for candidate in item.ranked_candidates %}
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary btn-sm mb-1 apply-ranked-candidate"
+                                                    data-candidate-mapping='{{ candidate.mapping | tojson }}'>
+                                                {{ candidate.word }}
+                                                <span class="text-muted">
+                                                    {{ candidate.score }}
+                                                </span>
+                                            </button>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">
+                    No dictionary-backed word pattern matches were found.
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Word Pattern Analysis
+    </div>
+
+    <div class="card-body">
+        {% if word_pattern_analysis %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Words</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in word_pattern_analysis %}
+                            <tr>
+                                <td>
+                                    <code>{{ item.pattern }}</code>
+                                    <br>
+                                    <small class="text-muted">{{ item.word_length }} letters</small>
+                                </td>
+                                <td>
+                                    {% for word in item.words %}
+                                        <span class="badge bg-secondary me-1 mb-1">{{ word }}</span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted mb-0">
+                No word patterns found.
+            </p>
+        {% endif %}
+    </div>
+</div>

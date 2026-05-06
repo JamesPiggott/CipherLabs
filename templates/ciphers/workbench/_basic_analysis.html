@@ -1,0 +1,42 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Basic Analysis
+    </div>
+
+    <div class="card-body">
+        <div class="row text-center g-3">
+            <div class="col-6">
+                <h5>{{ basic_analysis.total_characters }}</h5>
+                <small class="text-muted">Characters</small>
+            </div>
+
+            <div class="col-6">
+                <h5>{{ basic_analysis.total_letters }}</h5>
+                <small class="text-muted">Letters</small>
+            </div>
+
+            <div class="col-6">
+                <h5>{{ basic_analysis.unique_letters }}</h5>
+                <small class="text-muted">Unique Letters</small>
+            </div>
+
+            <div class="col-6">
+                <h5>{{ basic_analysis.unique_symbols }}</h5>
+                <small class="text-muted">Symbols</small>
+            </div>
+
+            <div class="col-12">
+                <h5>{{ basic_analysis.most_common_letter or "-" }}</h5>
+                <small class="text-muted">Most Common</small>
+            </div>
+        </div>
+
+        <hr>
+
+        <h6>Index of Coincidence</h6>
+        <h4>{{ index_of_coincidence.value }}</h4>
+        <p class="mb-0 text-muted small">
+            {{ index_of_coincidence.interpretation }}
+        </p>
+    </div>
+</div>

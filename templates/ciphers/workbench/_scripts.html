@@ -1,0 +1,196 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const ciphertext = {{ cipher.ciphertext | tojson }};
+    const saveUrl = "{{ url_for('ciphers.save_workspace', cipher_id=cipher.id) }}";
+
+    const inputs = document.querySelectorAll(".substitution-input");
+    const preview = document.getElementById("substitution-preview");
+    const clearButton = document.getElementById("clear-substitution-map");
+    const saveButton = document.getElementById("save-workspace");
+    const notesField = document.getElementById("workspace-notes");
+    const alertBox = document.getElementById("workspace-save-alert");
+
+    function buildMapping() {
+        const mapping = {};
+
+        inputs.forEach((input) => {
+            const cipherLetter = input.getAttribute("data-cipher-letter");
+            const plainLetter = input.value.trim().toUpperCase();
+
+            if (plainLetter.match(/^[A-Z]$/)) {
+                mapping[cipherLetter] = plainLetter;
+            }
+        });
+
+        return mapping;
+    }
+
+    function updatePreview() {
+        const mapping = buildMapping();
+        let result = "";
+
+        for (let i = 0; i < ciphertext.length; i++) {
+            const originalChar = ciphertext[i];
+            const upperChar = originalChar.toUpperCase();
+
+            if (mapping[upperChar]) {
+                result += mapping[upperChar];
+            } else if (upperChar.match(/^[A-Z]$/)) {
+                result += "_";
+            } else {
+                result += originalChar;
+            }
+        }
+
+        preview.textContent = result;
+    }
+
+    function setMappingLetter(cipherLetter, plainLetter) {
+        const input = document.querySelector(
+            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
+        );
+
+        if (!input) {
+            return;
+        }
+
+        input.value = plainLetter;
+    }
+
+    function showAlert(message, type) {
+        if (!alertBox) {
+            return;
+        }
+
+        alertBox.className = "alert alert-" + type;
+        alertBox.textContent = message;
+
+        setTimeout(() => {
+            alertBox.className = "alert d-none";
+            alertBox.textContent = "";
+        }, 2500);
+    }
+
+    inputs.forEach((input) => {
+        input.addEventListener("keyup", function () {
+            this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
+            updatePreview();
+        });
+
+        input.addEventListener("change", updatePreview);
+    });
+
+    if (clearButton) {
+        clearButton.addEventListener("click", function () {
+            inputs.forEach((input) => input.value = "");
+            updatePreview();
+        });
+    }
+
+    if (saveButton) {
+        saveButton.addEventListener("click", function () {
+            fetch(saveUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    substitution_mapping: buildMapping(),
+                    notes: notesField.value,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert("Workspace saved.", "success");
+                } else {
+                    showAlert("Could not save workspace.", "danger");
+                }
+            })
+            .catch(() => {
+                showAlert("Could not save workspace.", "danger");
+            });
+        });
+    }
+
+    document.querySelectorAll(".apply-single-suggestion").forEach((button) => {
+        button.addEventListener("click", function () {
+            const cipherLetter = this.getAttribute("data-cipher-letter");
+            const plainLetter = this.getAttribute("data-plain-letter");
+
+            setMappingLetter(cipherLetter, plainLetter);
+            updatePreview();
+        });
+    });
+
+    document.querySelectorAll(".apply-ranked-candidate").forEach((button) => {
+        button.addEventListener("click", function () {
+            const mapping = JSON.parse(this.getAttribute("data-candidate-mapping"));
+
+            Object.keys(mapping).forEach((cipherLetter) => {
+                setMappingLetter(cipherLetter, mapping[cipherLetter]);
+            });
+
+            updatePreview();
+        });
+    });
+
+    updatePreview();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const applyButton = document.getElementById("apply-substitution-key");
+
+    if (!applyButton) {
+        return;
+    }
+
+    const keyInput = document.getElementById("substitution-key");
+    const modeInput = document.getElementById("substitution-key-mode");
+    const outputBox = document.getElementById("substitution-key-output");
+    const alertBox = document.getElementById("substitution-key-alert");
+
+    const applyUrl = "{{ url_for('ciphers.apply_substitution_key', cipher_id=cipher.id) }}";
+
+    function showKeyAlert(message, type) {
+        alertBox.className = "alert alert-" + type;
+        alertBox.textContent = message;
+
+        setTimeout(() => {
+            alertBox.className = "alert d-none";
+            alertBox.textContent = "";
+        }, 3000);
+    }
+
+    keyInput.addEventListener("input", function () {
+        this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
+    });
+
+    applyButton.addEventListener("click", function () {
+        fetch(applyUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                key: keyInput.value,
+                mode: modeInput.value,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                outputBox.textContent = data.output;
+                showKeyAlert("Key applied successfully.", "success");
+            } else {
+                outputBox.textContent = "";
+                showKeyAlert(data.message || "Could not apply key.", "danger");
+            }
+        })
+        .catch(() => {
+            outputBox.textContent = "";
+            showKeyAlert("Could not apply key.", "danger");
+        });
+    });
+});
+</script>

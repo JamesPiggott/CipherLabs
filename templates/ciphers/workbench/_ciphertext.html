@@ -1,0 +1,19 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Ciphertext
+    </div>
+    <div class="card-body">
+        <pre class="mb-0" style="white-space: pre-wrap;">{{ cipher.ciphertext }}</pre>
+    </div>
+</div>
+
+{% if cipher.plaintext %}
+<div class="card mb-4">
+    <div class="card-header">
+        Plaintext
+    </div>
+    <div class="card-body">
+        <pre class="mb-0" style="white-space: pre-wrap;">{{ cipher.plaintext }}</pre>
+    </div>
+</div>
+{% endif %}

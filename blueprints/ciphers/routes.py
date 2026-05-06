@@ -11,6 +11,9 @@ from cipher.tools.index_of_coincidence import IndexOfCoincidence
 from cipher.tools.repeated_sequences import RepeatedSequences
 from cipher.tools.language_frequency_match import LanguageFrequencyMatch
 from cipher.tools.word_pattern_analysis import WordPatternAnalysis
+from cipher.tools.digram_similarity import DigramSimilarity
+from cipher.tools.substitution_cipher import SubstitutionCipher
+from cipher.tools.substitution_mapping_assistant import SubstitutionMappingAssistant
 
 ciphers_blueprint = Blueprint("ciphers", __name__, template_folder="../../templates/ciphers")
 
@@ -69,14 +72,26 @@ def view_cipher(cipher_id):
     caesar_best_guess = CaesarBruteForce.best_guess(cipher.ciphertext)
     language_frequency_matches = LanguageFrequencyMatch.analyze(cipher.ciphertext)
     word_pattern_analysis = WordPatternAnalysis.analyze(cipher.ciphertext)
+    digram_similarity = DigramSimilarity.analyze(cipher.ciphertext)
 
     workspace = None
+    workspace_mapping = {}
 
     if current_user.is_authenticated:
         workspace = UserWorkspaceProcessor().get_workspace(
             user_id=current_user.id,
             cipher_id=cipher.id,
         )
+
+        if workspace and workspace.substitution_mapping:
+            workspace_mapping = workspace.substitution_mapping
+
+    substitution_mapping_assistant = SubstitutionMappingAssistant.analyze(
+        message=cipher.ciphertext,
+        language=cipher.suspected_language,
+        current_mapping=workspace_mapping,
+        candidate_limit=8,
+    )
 
     return render_template(
         "ciphers/detail.html",
@@ -90,6 +105,8 @@ def view_cipher(cipher_id):
         workspace=workspace,
         language_frequency_matches=language_frequency_matches,
         word_pattern_analysis=word_pattern_analysis,
+        digram_similarity=digram_similarity,
+        substitution_mapping_assistant=substitution_mapping_assistant,
     )
 
 
@@ -113,3 +130,37 @@ def save_workspace(cipher_id):
         "message": "Workspace saved.",
         "updated_at": str(workspace.updated_at),
     })
+
+
+@ciphers_blueprint.route("/<cipher_id>/substitution/apply", methods=["POST"])
+@login_required
+def apply_substitution_key(cipher_id):
+    data = request.get_json() or {}
+
+    key = data.get("key", "")
+    mode = data.get("mode", "decrypt")
+
+    cipher = CipherMessageProcessor().get_cipher(cipher_id)
+
+    if not cipher:
+        return jsonify({
+            "success": False,
+            "message": "Cipher not found.",
+        }), 404
+
+    try:
+        if mode == "encrypt":
+            output = SubstitutionCipher.encrypt(key, cipher.ciphertext)
+        else:
+            output = SubstitutionCipher.decrypt(key, cipher.ciphertext)
+
+        return jsonify({
+            "success": True,
+            "output": output,
+        })
+
+    except ValueError as error:
+        return jsonify({
+            "success": False,
+            "message": str(error),
+        }), 400

@@ -1,0 +1,45 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Language Frequency Hints
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted small">
+            Compares ciphertext letter frequency order against known language profiles.
+        </p>
+
+        {% if language_frequency_matches %}
+            {% for result in language_frequency_matches %}
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ result.language }}</strong>
+                        <span>{{ result.score }} / {{ result.max_score }}</span>
+                    </div>
+
+                    <div class="progress" style="height: 18px;">
+                        <div class="progress-bar"
+                             role="progressbar"
+                             style="width: {{ (result.score / result.max_score) * 100 }}%;">
+                        </div>
+                    </div>
+
+                    {% if result.frequency_order %}
+                        <small class="text-muted">
+                            <code>{{ result.frequency_order[:12] }}</code>
+                        </small>
+                    {% endif %}
+
+                    {% if result.note %}
+                        <div>
+                            <small class="text-muted">{{ result.note }}</small>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted mb-0">
+                No language frequency hints available.
+            </p>
+        {% endif %}
+    </div>
+</div>

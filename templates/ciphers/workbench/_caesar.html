@@ -1,0 +1,38 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Caesar Brute Force
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted">
+            All 26 shifts are tested and scored. The most likely result is shown first.
+        </p>
+
+        {% if caesar_best_guess %}
+            <div class="alert alert-success">
+                <h5 class="mb-2">
+                    Best Guess: Shift {{ caesar_best_guess.shift }}
+                </h5>
+                <pre class="mb-0" style="white-space: pre-wrap;">{{ caesar_best_guess.plaintext }}</pre>
+            </div>
+        {% endif %}
+
+        <div class="list-group">
+            {% for result in caesar_results %}
+                <div class="list-group-item {% if loop.first %}list-group-item-success{% endif %}">
+                    <div class="d-flex justify-content-between">
+                        <strong>Shift {{ result.shift }}</strong>
+
+                        {% if loop.first %}
+                            <span class="badge bg-success">Best guess</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Score {{ result.score }}</span>
+                        {% endif %}
+                    </div>
+
+                    <pre class="mb-0 mt-2" style="white-space: pre-wrap;">{{ result.plaintext }}</pre>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

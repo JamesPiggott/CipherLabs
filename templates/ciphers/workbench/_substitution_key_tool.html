@@ -1,0 +1,49 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Substitution Key Tool
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted small">
+            Enter a full 26-letter substitution key to test it against the ciphertext.
+        </p>
+
+        {% if current_user.is_authenticated %}
+            <div id="substitution-key-alert" class="alert d-none"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Substitution Key</label>
+                <input id="substitution-key"
+                       class="form-control"
+                       maxlength="26"
+                       placeholder="Example: LFWOAYUISVKMNXPBDCRJTQEGHZ">
+                <div class="form-text">
+                    The key must contain each letter A-Z exactly once.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mode</label>
+                <select id="substitution-key-mode" class="form-select">
+                    <option value="decrypt" selected>Decrypt ciphertext</option>
+                    <option value="encrypt">Encrypt ciphertext</option>
+                </select>
+            </div>
+
+            <button type="button"
+                    class="btn btn-outline-primary btn-sm"
+                    id="apply-substitution-key">
+                Apply Key
+            </button>
+
+            <h6 class="mt-4">Output</h6>
+            <pre id="substitution-key-output"
+                 class="border rounded p-3 bg-light"
+                 style="white-space: pre-wrap;"></pre>
+        {% else %}
+            <div class="alert alert-warning mb-0">
+                Log in to use the substitution key tool.
+            </div>
+        {% endif %}
+    </div>
+</div>

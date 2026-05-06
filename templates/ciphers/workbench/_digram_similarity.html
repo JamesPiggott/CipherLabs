@@ -1,0 +1,33 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Digram Similarity
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted small">
+            Compares observed two-letter combinations against known language digram profiles.
+        </p>
+
+        {% if digram_similarity %}
+            {% for result in digram_similarity %}
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ result.language }}</strong>
+                        <span>{{ result.score }}</span>
+                    </div>
+
+                    <div class="progress" style="height: 18px;">
+                        <div class="progress-bar"
+                             role="progressbar"
+                             style="width: {{ result.score * 100 }}%;">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted mb-0">
+                Not enough text for digram comparison.
+            </p>
+        {% endif %}
+    </div>
+</div>

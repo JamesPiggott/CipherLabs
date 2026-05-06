@@ -1,0 +1,34 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Repeated Sequences
+    </div>
+
+    <div class="card-body">
+        {% if repeated_sequences %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Seq</th>
+                            <th>Count</th>
+                            <th>Distances</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in repeated_sequences %}
+                            <tr>
+                                <td><strong>{{ item.sequence }}</strong></td>
+                                <td>{{ item.count }}</td>
+                                <td><small>{{ item.distances }}</small></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted mb-0">
+                No repeating sequences found.
+            </p>
+        {% endif %}
+    </div>
+</div>

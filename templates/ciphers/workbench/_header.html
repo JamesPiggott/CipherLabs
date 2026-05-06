@@ -1,0 +1,16 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h1 class="card-title mb-2">{{ cipher.title }}</h1>
+                <p class="text-muted mb-0">
+                    Status: {{ cipher.status }} |
+                    Type: {{ cipher.cipher_type or "Unknown" }} |
+                    Language: {{ cipher.suspected_language or "Unknown" }}
+                </p>
+            </div>
+
+            <span class="badge bg-secondary">{{ cipher.status }}</span>
+        </div>
+    </div>
+</div>
