@@ -1,0 +1,47 @@
+<div class="card mb-4 workbench-sidebar-card">
+    <div class="card-header">
+        Workbench Flow
+    </div>
+
+    <div class="list-group list-group-flush">
+        {% for phase in workbench.phases %}
+            <button class="list-group-item list-group-item-action workbench-phase-link {% if loop.first %}active{% endif %}"
+                    type="button"
+                    data-phase-target="{{ phase.id }}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>{{ phase.title }}</strong>
+                    <span class="badge bg-secondary">
+                        {{ workbench.grouped_widgets[phase.id] | length }}
+                    </span>
+                </div>
+                <small>{{ phase.description }}</small>
+            </button>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Recommended Tools
+    </div>
+
+    <div class="card-body">
+        {% for widget in workbench.widgets %}
+            {% if widget.recommended %}
+                <div class="recommended-tool mb-2">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>{{ widget.title }}</strong>
+                            {% if widget.description %}
+                                <div class="text-muted small">
+                                    {{ widget.description }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <span class="badge bg-success">Use</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

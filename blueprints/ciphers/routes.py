@@ -14,6 +14,7 @@ from cipher.tools.word_pattern_analysis import WordPatternAnalysis
 from cipher.tools.digram_similarity import DigramSimilarity
 from cipher.tools.substitution_cipher import SubstitutionCipher
 from cipher.tools.substitution_mapping_assistant import SubstitutionMappingAssistant
+from cipher.tools.workbench.cipher_workbench_builder import CipherWorkbenchBuilder
 
 ciphers_blueprint = Blueprint("ciphers", __name__, template_folder="../../templates/ciphers")
 
@@ -74,6 +75,12 @@ def view_cipher(cipher_id):
     word_pattern_analysis = WordPatternAnalysis.analyze(cipher.ciphertext)
     digram_similarity = DigramSimilarity.analyze(cipher.ciphertext)
 
+    workbench = CipherWorkbenchBuilder.build(
+        cipher=cipher,
+        index_of_coincidence=index_of_coincidence,
+        repeated_sequences=repeated_sequences,
+    )
+
     workspace = None
     workspace_mapping = {}
 
@@ -107,6 +114,7 @@ def view_cipher(cipher_id):
         word_pattern_analysis=word_pattern_analysis,
         digram_similarity=digram_similarity,
         substitution_mapping_assistant=substitution_mapping_assistant,
+        workbench=workbench,
     )
 
 

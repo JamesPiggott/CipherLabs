@@ -1,0 +1,35 @@
+<div class="card mb-4 workbench-hero">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+                <div class="text-uppercase small workbench-kicker">
+                    Cipher Workbench
+                </div>
+
+                <h1 class="card-title mb-2">{{ cipher.title }}</h1>
+
+                <p class="text-muted mb-0">
+                    Status: {{ cipher.status }} |
+                    Type: {{ cipher.cipher_type or "Unknown" }} |
+                    Language: {{ cipher.suspected_language or "Unknown" }}
+                </p>
+            </div>
+
+            <span class="badge bg-secondary">{{ cipher.status }}</span>
+        </div>
+
+        <div class="workbench-recommendation mt-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <small class="text-muted">Current hypothesis</small>
+                    <div class="fw-semibold">{{ workbench.primary_hypothesis }}</div>
+                </div>
+
+                <div class="col-md-8">
+                    <small class="text-muted">Recommended path</small>
+                    <div>{{ workbench.recommended_path }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,9 @@
-# 🔐 CipherLab
+# 🔐 CipherLabs
 
 **A public codebreaking workbench for learning, exploring, and solving
 ciphers.**
 
-CipherLab is a web-based platform built with Flask that allows users to
+CipherLabs is a web-based platform built with Flask that allows users to
 study how famous ciphers were broken and to collaboratively explore
 unsolved encrypted messages using real analysis tools.
 
@@ -11,7 +11,7 @@ unsolved encrypted messages using real analysis tools.
 
 ## 🚀 Vision
 
-CipherLab is designed to bridge the gap between:
+CipherLabs is designed to bridge the gap between:
 
 -   📚 **Educational cryptography**
 -   🧠 **Hands-on codebreaking**
@@ -172,11 +172,11 @@ are welcome.
 
 ## ⚠️ Disclaimer
 
-CipherLab is intended for **educational and research purposes only**.
+CipherLabs is intended for **educational and research purposes only**.
 
 ------------------------------------------------------------------------
 
 ## 🧠 Final Thought
 
 > Every cipher tells a story.\
-> CipherLab is where you learn how to read it.
+> CipherLabs is where you learn how to read it.

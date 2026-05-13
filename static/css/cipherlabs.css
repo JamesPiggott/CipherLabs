@@ -1,0 +1,490 @@
+/* =========================================================
+   CipherLabs Theme
+   ========================================================= */
+
+:root {
+    --cl-bg: #0f172a;
+    --cl-bg-dark: #0b1220;
+    --cl-bg-panel: rgba(15, 23, 42, 0.45);
+
+    --cl-card: #16213d;
+    --cl-card-light: #1b2a4a;
+
+    --cl-border: #263554;
+    --cl-border-strong: #475569;
+
+    --cl-text: #e2e8f0;
+    --cl-text-strong: #f8fafc;
+    --cl-text-muted: #94a3b8;
+    --cl-text-faint: #64748b;
+
+    --cl-accent: #38bdf8;
+    --cl-accent-hover: #0ea5e9;
+    --cl-accent-soft: rgba(56, 189, 248, 0.14);
+
+    --cl-success: #10b981;
+    --cl-warning: #f59e0b;
+    --cl-danger: #ef4444;
+
+    --cl-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    --cl-radius: 0.75rem;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+
+body {
+    background: var(--cl-bg);
+    color: var(--cl-text);
+    font-family: Arial, sans-serif;
+}
+
+main {
+    color: var(--cl-text);
+}
+
+a {
+    color: var(--cl-accent);
+}
+
+a:hover {
+    color: var(--cl-accent-hover);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.card-title,
+strong,
+.fw-semibold {
+    color: var(--cl-text-strong);
+    font-weight: 600;
+}
+
+p,
+td,
+th,
+label,
+.form-label,
+.card-body,
+.small,
+small {
+    color: var(--cl-text);
+}
+
+.text-muted,
+.card .text-muted,
+.form-text {
+    color: var(--cl-text-muted) !important;
+}
+
+code {
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.1rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+pre {
+    background: var(--cl-bg-dark) !important;
+    color: #dbeafe;
+    border: 1px solid var(--cl-border);
+}
+
+/* =========================================================
+   Navbar
+   ========================================================= */
+
+.navbar {
+    background: var(--cl-bg-dark) !important;
+    border-bottom: 1px solid var(--cl-border);
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--cl-text) !important;
+}
+
+.nav-link:hover {
+    color: var(--cl-accent) !important;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.card {
+    background: var(--cl-card);
+    border: 1px solid var(--cl-border);
+    box-shadow: var(--cl-shadow);
+}
+
+.card-header {
+    background: var(--cl-card-light);
+    border-bottom: 1px solid var(--cl-border);
+    color: var(--cl-text-strong);
+    font-weight: 600;
+}
+
+.card-body p {
+    color: var(--cl-text-muted);
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.table {
+    --bs-table-color: var(--cl-text);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--cl-border);
+    color: var(--cl-text);
+}
+
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    border-bottom-color: var(--cl-border);
+}
+
+.table td,
+.table th {
+    color: var(--cl-text);
+}
+
+.table thead th {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+/* =========================================================
+   Forms
+   ========================================================= */
+
+.form-control,
+.form-select {
+    background: var(--cl-bg);
+    border: 1px solid var(--cl-border);
+    color: var(--cl-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--cl-bg);
+    color: var(--cl-text);
+    border-color: var(--cl-accent);
+    box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.2);
+}
+
+input,
+textarea,
+select {
+    color: var(--cl-text) !important;
+}
+
+.form-control::placeholder,
+textarea::placeholder,
+input::placeholder {
+    color: var(--cl-text-faint) !important;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.btn-primary,
+.btn-success,
+.workbench-widget-toggle.btn-success {
+    background: var(--cl-accent);
+    border-color: var(--cl-accent);
+    color: #08111f;
+    font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.workbench-widget-toggle.btn-success:hover {
+    background: var(--cl-accent-hover);
+    border-color: var(--cl-accent-hover);
+    color: #08111f;
+}
+
+.btn-outline-secondary {
+    background: transparent;
+    border-color: var(--cl-border-strong);
+    color: #cbd5e1;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background: #1e293b;
+    border-color: var(--cl-accent);
+    color: var(--cl-text-strong);
+}
+
+/* =========================================================
+   Alerts
+   ========================================================= */
+
+.alert {
+    border: none;
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+}
+
+/* =========================================================
+   Badges
+   ========================================================= */
+
+.badge.bg-secondary {
+    background: #475569 !important;
+    color: var(--cl-text-strong);
+}
+
+.badge.bg-success {
+    background: var(--cl-success) !important;
+    color: #052e1a;
+}
+
+/* =========================================================
+   List Pages
+   ========================================================= */
+
+.list-group {
+    border: 1px solid var(--cl-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.list-group-item {
+    background: var(--cl-card);
+    color: var(--cl-text);
+    border-color: var(--cl-border);
+}
+
+.list-group-item-action {
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.list-group-item-action:hover {
+    background: var(--cl-card-light);
+    color: var(--cl-text);
+    border-left: 4px solid var(--cl-accent);
+}
+
+.list-group-item h5,
+.list-group-item .mb-1 {
+    color: var(--cl-text-strong);
+}
+
+.list-group-item p {
+    color: var(--cl-text);
+}
+
+.list-group-item small,
+.list-group-item .text-muted {
+    color: var(--cl-text-muted) !important;
+}
+
+.cipher-list-preview {
+    color: var(--cl-text);
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   Workbench Layout
+   ========================================================= */
+
+.workbench-hero {
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 32rem),
+        var(--cl-card);
+}
+
+.workbench-kicker {
+    letter-spacing: 0.08em;
+    color: var(--cl-accent);
+    font-weight: 700;
+}
+
+.workbench-recommendation,
+.workbench-phase-header,
+.recommended-tool {
+    border: 1px solid var(--cl-border);
+    border-radius: var(--cl-radius);
+    background: var(--cl-bg-panel);
+}
+
+.workbench-recommendation {
+    padding: 1rem;
+    color: var(--cl-text);
+}
+
+.workbench-recommendation small {
+    color: #7dd3fc !important;
+}
+
+.workbench-recommendation div {
+    color: var(--cl-text);
+}
+
+.workbench-sidebar-card {
+    position: sticky;
+    top: 1rem;
+}
+
+.workbench-phase-header {
+    padding: 1rem;
+}
+
+.workbench-phase-header h3 {
+    color: var(--cl-text-strong);
+}
+
+.workbench-phase-header p {
+    color: var(--cl-text-muted);
+}
+
+.workbench-widget-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.workbench-widget {
+    animation: workbenchFadeIn 0.16s ease-in-out;
+}
+
+.recommended-tool {
+    padding: 0.75rem;
+}
+
+.recommended-tool strong {
+    color: var(--cl-text-strong);
+}
+
+.recommended-tool .text-muted {
+    color: var(--cl-text-muted) !important;
+}
+
+@keyframes workbenchFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================================
+   Workbench Flow Navigation
+   ========================================================= */
+
+.workbench-phase-link {
+    background: var(--cl-card);
+    color: var(--cl-text);
+    border-color: var(--cl-border);
+}
+
+.workbench-phase-link strong {
+    color: var(--cl-text-strong);
+}
+
+.workbench-phase-link small {
+    color: var(--cl-text-muted) !important;
+}
+
+.workbench-phase-link:hover {
+    background: var(--cl-card-light);
+    color: var(--cl-text);
+}
+
+.workbench-phase-link.active {
+    background: var(--cl-accent-soft);
+    border-left: 4px solid var(--cl-accent);
+    color: var(--cl-text);
+}
+
+.workbench-phase-link.active strong {
+    color: var(--cl-accent);
+}
+
+/* =========================================================
+   Frequency Bars
+   ========================================================= */
+
+.frequency-chart {
+    display: flex;
+    align-items: end;
+    gap: 8px;
+    height: 260px;
+    overflow-x: auto;
+    padding: 1rem 0.5rem 0.5rem;
+    border: 1px solid var(--cl-border);
+    border-radius: 0.375rem;
+    background: var(--cl-bg-dark);
+}
+
+.frequency-bar-wrapper {
+    min-width: 34px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.frequency-bar-label {
+    height: 28px;
+    color: var(--cl-text-muted);
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+.frequency-bar-track {
+    width: 22px;
+    height: 170px;
+    background: #1e293b;
+    display: flex;
+    align-items: end;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.frequency-bar-fill {
+    width: 100%;
+    background: var(--cl-accent);
+}
+
+.frequency-letter {
+    margin-top: 6px;
+    color: var(--cl-text-strong);
+    font-weight: 600;
+}
+
+.frequency-count {
+    color: var(--cl-text-muted);
+    font-size: 0.7rem;
+}

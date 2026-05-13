@@ -1,0 +1,37 @@
+{% for phase in workbench.phases %}
+    <div class="workbench-phase-panel {% if not loop.first %}d-none{% endif %}"
+         data-phase-panel="{{ phase.id }}">
+
+        <div class="workbench-phase-header mb-3">
+            <div>
+                <div class="text-uppercase small workbench-kicker">
+                    {{ phase.short_title }}
+                </div>
+                <h3 class="mb-1">{{ phase.title }}</h3>
+                <p class="text-muted mb-0">{{ phase.description }}</p>
+            </div>
+        </div>
+
+        <div class="workbench-widget-toolbar mb-3">
+            {% for widget in workbench.grouped_widgets[phase.id] %}
+                <button type="button"
+                        class="btn btn-sm {% if widget.default_open %}btn-success{% else %}btn-outline-secondary{% endif %} workbench-widget-toggle"
+                        data-widget-target="{{ widget.id }}"
+                        aria-pressed="{{ 'true' if widget.default_open else 'false' }}">
+                    {{ widget.title }}
+
+                    {% if widget.recommended %}
+                        <span class="ms-1">★</span>
+                    {% endif %}
+                </button>
+            {% endfor %}
+        </div>
+
+        {% for widget in workbench.grouped_widgets[phase.id] %}
+            <div class="workbench-widget {% if not widget.default_open %}d-none{% endif %}"
+                 data-widget="{{ widget.id }}">
+                {% include widget.template %}
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}

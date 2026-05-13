@@ -1,5 +1,55 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    const phaseButtons = document.querySelectorAll(".workbench-phase-link");
+    const phasePanels = document.querySelectorAll(".workbench-phase-panel");
+    const widgetButtons = document.querySelectorAll(".workbench-widget-toggle");
+
+    phaseButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetPhase = this.getAttribute("data-phase-target");
+
+            phaseButtons.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+
+            phasePanels.forEach((panel) => {
+                if (panel.getAttribute("data-phase-panel") === targetPhase) {
+                    panel.classList.remove("d-none");
+                } else {
+                    panel.classList.add("d-none");
+                }
+            });
+        });
+    });
+
+    widgetButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetWidget = this.getAttribute("data-widget-target");
+            const widget = document.querySelector(
+                '.workbench-widget[data-widget="' + targetWidget + '"]'
+            );
+
+            if (!widget) {
+                return;
+            }
+
+            widget.classList.toggle("d-none");
+
+            if (widget.classList.contains("d-none")) {
+                this.classList.remove("btn-success");
+                this.classList.add("btn-outline-secondary");
+                this.setAttribute("aria-pressed", "false");
+            } else {
+                this.classList.add("btn-success");
+                this.classList.remove("btn-outline-secondary");
+                this.setAttribute("aria-pressed", "true");
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
     const ciphertext = {{ cipher.ciphertext | tojson }};
     const saveUrl = "{{ url_for('ciphers.save_workspace', cipher_id=cipher.id) }}";
 
@@ -7,8 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const preview = document.getElementById("substitution-preview");
     const clearButton = document.getElementById("clear-substitution-map");
     const saveButton = document.getElementById("save-workspace");
+    const saveNotesOnlyButton = document.getElementById("save-notes-only");
     const notesField = document.getElementById("workspace-notes");
-    const alertBox = document.getElementById("workspace-save-alert");
+
+    const workspaceAlertBox = document.getElementById("workspace-save-alert");
+    const notesAlertBox = document.getElementById("workspace-notes-alert");
 
     function buildMapping() {
         const mapping = {};
@@ -26,6 +79,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updatePreview() {
+        if (!preview) {
+            return;
+        }
+
         const mapping = buildMapping();
         let result = "";
 
@@ -57,7 +114,15 @@ document.addEventListener("DOMContentLoaded", function () {
         input.value = plainLetter;
     }
 
-    function showAlert(message, type) {
+    function getNotesValue() {
+        if (!notesField) {
+            return "";
+        }
+
+        return notesField.value;
+    }
+
+    function showAlert(alertBox, message, type) {
         if (!alertBox) {
             return;
         }
@@ -69,6 +134,30 @@ document.addEventListener("DOMContentLoaded", function () {
             alertBox.className = "alert d-none";
             alertBox.textContent = "";
         }, 2500);
+    }
+
+    function saveWorkspace(successMessage, alertBox) {
+        fetch(saveUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                substitution_mapping: buildMapping(),
+                notes: getNotesValue(),
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(alertBox, successMessage, "success");
+            } else {
+                showAlert(alertBox, "Could not save workspace.", "danger");
+            }
+        })
+        .catch(() => {
+            showAlert(alertBox, "Could not save workspace.", "danger");
+        });
     }
 
     inputs.forEach((input) => {
@@ -89,27 +178,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (saveButton) {
         saveButton.addEventListener("click", function () {
-            fetch(saveUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    substitution_mapping: buildMapping(),
-                    notes: notesField.value,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert("Workspace saved.", "success");
-                } else {
-                    showAlert("Could not save workspace.", "danger");
-                }
-            })
-            .catch(() => {
-                showAlert("Could not save workspace.", "danger");
-            });
+            saveWorkspace("Workspace saved.", workspaceAlertBox);
+        });
+    }
+
+    if (saveNotesOnlyButton) {
+        saveNotesOnlyButton.addEventListener("click", function () {
+            saveWorkspace("Notes saved.", notesAlertBox);
         });
     }
 
@@ -137,7 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updatePreview();
 });
+</script>
 
+<script>
 document.addEventListener("DOMContentLoaded", function () {
     const applyButton = document.getElementById("apply-substitution-key");
 
@@ -153,6 +230,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const applyUrl = "{{ url_for('ciphers.apply_substitution_key', cipher_id=cipher.id) }}";
 
     function showKeyAlert(message, type) {
+        if (!alertBox) {
+            return;
+        }
+
         alertBox.className = "alert alert-" + type;
         alertBox.textContent = message;
 

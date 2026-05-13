@@ -7,24 +7,15 @@
     </a>
 </div>
 
-{% include "ciphers/workbench/_header.html" %}
+{% include "ciphers/workbench/_workbench_header.html" %}
 
 <div class="row g-4">
-    <div class="col-lg-8">
-        {% include "ciphers/workbench/_ciphertext.html" %}
-        {% include "ciphers/workbench/_substitution_solver.html" %}
-        {% include "ciphers/workbench/_substitution_assistant.html" %}
-        {% include "ciphers/workbench/_caesar.html" %}
+    <div class="col-lg-3">
+        {% include "ciphers/workbench/_workbench_sidebar.html" %}
     </div>
 
-    <div class="col-lg-4">
-        {% include "ciphers/workbench/_basic_analysis.html" %}
-        {% include "ciphers/workbench/_language_hints.html" %}
-        {% include "ciphers/workbench/_repeated_sequences.html" %}
-        {% include "ciphers/workbench/_word_patterns.html" %}
-        {% include "ciphers/workbench/_digram_similarity.html" %}
-        {% include "ciphers/workbench/_frequency_analysis.html" %}
-        {% include "ciphers/workbench/_substitution_key_tool.html" %}
+    <div class="col-lg-9">
+        {% include "ciphers/workbench/_workbench_tabs.html" %}
     </div>
 </div>
 

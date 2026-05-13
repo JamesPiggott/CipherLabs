@@ -21,19 +21,22 @@
         {% for c in ciphers %}
             <a href="{{ url_for('ciphers.view_cipher', cipher_id=c.id) }}"
                class="list-group-item list-group-item-action">
-                <div class="d-flex justify-content-between">
-                    <h5 class="mb-1">{{ c.title }}</h5>
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <h5 class="mb-2">{{ c.title }}</h5>
+
+                        <p class="cipher-list-preview mb-2">
+                            {{ c.ciphertext[:160] }}{% if c.ciphertext|length > 160 %}...{% endif %}
+                        </p>
+
+                        <small class="text-muted">
+                            Type: {{ c.cipher_type or "Unknown" }} |
+                            Language: {{ c.suspected_language or "Unknown" }}
+                        </small>
+                    </div>
+
                     <span class="badge bg-secondary">{{ c.status }}</span>
                 </div>
-
-                <p class="mb-1 text-monospace">
-                    {{ c.ciphertext[:160] }}{% if c.ciphertext|length > 160 %}...{% endif %}
-                </p>
-
-                <small class="text-muted">
-                    Type: {{ c.cipher_type or "Unknown" }} |
-                    Language: {{ c.suspected_language or "Unknown" }}
-                </small>
             </a>
         {% endfor %}
     </div>
