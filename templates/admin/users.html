@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Admin - Users</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Registration
+    </div>
+
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin.toggle_registration') }}">
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input"
+                       type="checkbox"
+                       name="registration_enabled"
+                       id="registration_enabled"
+                       {% if registration_enabled %}checked{% endif %}>
+                <label class="form-check-label" for="registration_enabled">
+                    Allow public registration
+                </label>
+            </div>
+
+            <button class="btn btn-primary btn-sm">
+                Save registration setting
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Registered Users
+    </div>
+
+    <div class="card-body">
+        {% if users %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Active</th>
+                            <th>Created</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td><strong>{{ user.username }}</strong></td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% if user.is_admin %}
+                                        <span class="badge bg-success">Admin</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">User</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.created_at }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"
+                                       class="btn btn-outline-secondary btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <form method="post"
+                                          action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Delete this user?');">
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted mb-0">No users found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

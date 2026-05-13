@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user
 
 from core.users.processor.user_processor import UserProcessor
+from settings.processor.app_settings_processor import AppSettingsProcessor
+
 
 auth_blueprint = Blueprint("auth", __name__, template_folder="../../templates/auth")
 
@@ -10,6 +12,10 @@ auth_blueprint = Blueprint("auth", __name__, template_folder="../../templates/au
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("main.index"))
+
+    if not AppSettingsProcessor().is_registration_enabled():
+        flash("Registration is currently disabled.", "warning")
+        return redirect(url_for("auth.login"))
 
     if request.method == "POST":
         username = request.form.get("username", "")
@@ -46,7 +52,7 @@ def login():
         identifier = request.form.get("identifier", "")
         password = request.form.get("password", "")
 
-        user = UserProcessor().authenticate(identifier, password)
+        user = UserProcessor().authenticate_user(identifier, password)
 
         if user:
             login_user(user)

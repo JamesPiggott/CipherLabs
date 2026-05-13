@@ -1,0 +1,31 @@
+services:
+  cipherlabs-web:
+    build: .
+    container_name: cipherlabs-web
+    ports:
+      - "192.168.1.30:8000:8000"
+    environment:
+      FLASK_ENV: production
+      SECRET_KEY: change-this-to-a-long-random-secret
+      POSTGRES_HOST: cipherlabs-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: cipherlabs
+      POSTGRES_USER: cipherlabs
+      POSTGRES_PASSWORD: change-this-db-password
+    depends_on:
+      - cipherlabs-db
+    restart: unless-stopped
+
+  cipherlabs-db:
+    image: postgres:16
+    container_name: cipherlabs-db
+    environment:
+      POSTGRES_DB: cipherlabs
+      POSTGRES_USER: cipherlabs
+      POSTGRES_PASSWORD: change-this-db-password
+    volumes:
+      - cipherlabs-postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  cipherlabs-postgres-data:
