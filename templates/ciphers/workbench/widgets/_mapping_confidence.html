@@ -1,0 +1,74 @@
+<!-- templates/ciphers/workbench/widgets/_mapping_confidence.html -->
+
+<div class="card mb-3">
+    <div class="card-header">
+        Mapping Confidence
+    </div>
+
+    <div class="card-body">
+        {% if mapping_confidence and mapping_confidence.available and mapping_confidence["items"] %}
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <small class="text-muted">Strong</small>
+                    <div class="h5 mb-0">{{ mapping_confidence.strong_count }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Tentative</small>
+                    <div class="h5 mb-0">{{ mapping_confidence.medium_count }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Weak</small>
+                    <div class="h5 mb-0">{{ mapping_confidence.weak_count }}</div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Cipher</th>
+                            <th>Plain</th>
+                            <th>Confidence</th>
+                            <th>Evidence</th>
+                            <th>Alternatives</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in mapping_confidence["items"] %}
+                            <tr>
+                                <td class="fw-semibold">{{ item.cipher_letter }}</td>
+                                <td class="fw-semibold">{{ item.plain_letter }}</td>
+                                <td style="min-width: 180px;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="mapping-confidence-bar">
+                                            <div class="mapping-confidence-fill mapping-confidence-{{ item.tier }}"
+                                                 style="width: {{ item.confidence_percent }}%;">
+                                            </div>
+                                        </div>
+                                        <span class="small">{{ item.confidence_percent }}%</span>
+                                    </div>
+                                </td>
+                                <td class="small text-muted">
+                                    {{ item.votes }} / {{ item.total_votes }} votes
+                                </td>
+                                <td class="small">
+                                    {% for alternative in item.alternatives %}
+                                        <span class="badge bg-secondary me-1">
+                                            {{ alternative.plain_letter }} {{ (alternative.confidence * 100) | round | int }}%
+                                        </span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning mb-0">
+                No mapping confidence data is available yet. Use the substitution assistant first.
+            </div>
+        {% endif %}
+    </div>
+</div>

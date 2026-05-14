@@ -54,3 +54,12 @@ class CipherMessageDatabase:
         query = "SELECT * FROM cipher_messages WHERE id = %s;"
         row = db.fetch_one(query, (cipher_id,))
         return CipherMessage.from_row(row)
+
+    def delete_by_id(self, cipher_id):
+        query = """
+        DELETE FROM cipher_messages
+        WHERE id = %s
+        RETURNING *;
+        """
+        row = db.execute_returning(query, (cipher_id,))
+        return CipherMessage.from_row(row) if row else None

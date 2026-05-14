@@ -1,0 +1,490 @@
+[
+  {
+    "term": "Abbreviation cipher",
+    "slug": "abbreviation-cipher",
+    "category": "classical cipher",
+    "definition": "A method where words are represented by shortened forms, often by taking the first letter of each word.",
+    "example": "",
+    "tags": ["abbreviation", "word based", "classical cipher"]
+  },
+  {
+    "term": "American Cryptogram Association",
+    "slug": "american-cryptogram-association",
+    "category": "organization",
+    "definition": "An organization focused on recreational cryptography, cryptograms, and codebreaking as a hobby.",
+    "example": "",
+    "tags": ["ACA", "cryptograms", "community"]
+  },
+  {
+    "term": "Aristocrat",
+    "slug": "aristocrat",
+    "category": "substitution",
+    "definition": "A simple substitution cipher where spaces, word boundaries, and punctuation are preserved.",
+    "example": "",
+    "tags": ["substitution", "word divisions", "classical cipher"]
+  },
+  {
+    "term": "ASCII code",
+    "slug": "ascii-code",
+    "category": "encoding",
+    "definition": "A standard character encoding system that represents letters, numbers, and symbols as numeric values. ASCII is an encoding, not encryption.",
+    "example": "The letter A is represented by decimal 65, hexadecimal 41, and binary 01000001.",
+    "tags": ["encoding", "binary", "characters"]
+  },
+  {
+    "term": "Baudot code",
+    "slug": "baudot-code",
+    "category": "encoding",
+    "definition": "A five-bit character encoding historically used with teleprinters and punched paper tape.",
+    "example": "",
+    "tags": ["encoding", "teleprinter", "five bit"]
+  },
+  {
+    "term": "Caesar cipher",
+    "slug": "caesar-cipher",
+    "category": "substitution",
+    "definition": "A shift cipher where each letter is replaced by another letter a fixed number of positions away in the alphabet.",
+    "example": "With a shift of 3, A becomes D, B becomes E, and C becomes F.",
+    "tags": ["substitution", "shift", "classical cipher"]
+  },
+  {
+    "term": "Cipher",
+    "slug": "cipher",
+    "category": "general",
+    "definition": "An encryption method that transforms individual letters, symbols, or groups of letters according to a rule or key.",
+    "example": "",
+    "tags": ["encryption", "letters", "method"]
+  },
+  {
+    "term": "Ciphertext",
+    "slug": "ciphertext",
+    "category": "general",
+    "definition": "The encrypted form of a message. Ciphertext is usually the starting point for cryptanalysis.",
+    "example": "",
+    "tags": ["encrypted text", "message"]
+  },
+  {
+    "term": "Cleartext",
+    "slug": "cleartext",
+    "category": "general",
+    "definition": "Readable, unencrypted text, especially text that appears exposed within or beside encrypted material.",
+    "example": "",
+    "tags": ["unencrypted", "readable text"]
+  },
+  {
+    "term": "Code",
+    "slug": "code",
+    "category": "code system",
+    "definition": "An encryption system that replaces whole words, phrases, or concepts with predefined substitutes, often from a codebook.",
+    "example": "",
+    "tags": ["codebook", "word based", "phrases"]
+  },
+  {
+    "term": "Codebreaking",
+    "slug": "codebreaking",
+    "category": "cryptanalysis",
+    "definition": "The process of solving encrypted messages without already having the full key or method.",
+    "example": "",
+    "tags": ["cryptanalysis", "solving", "breaking"]
+  },
+  {
+    "term": "Codegroup",
+    "slug": "codegroup",
+    "category": "code system",
+    "definition": "A number, symbol, or letter group used to represent a word, phrase, or character in a code system.",
+    "example": "",
+    "tags": ["codebook", "symbols", "replacement"]
+  },
+  {
+    "term": "Columnar transposition",
+    "slug": "columnar-transposition",
+    "category": "transposition",
+    "definition": "A transposition cipher where text is written into rows and then read out by columns in an order usually determined by a keyword.",
+    "example": "",
+    "tags": ["transposition", "columns", "keyword"]
+  },
+  {
+    "term": "Crib",
+    "slug": "crib",
+    "category": "cryptanalysis",
+    "definition": "A suspected or known word or phrase that may appear in the plaintext and can help guide the attack.",
+    "example": "",
+    "tags": ["known plaintext", "guess", "solving"]
+  },
+  {
+    "term": "Cryptanalysis",
+    "slug": "cryptanalysis",
+    "category": "cryptanalysis",
+    "definition": "The study and practice of analyzing encrypted messages or systems, usually to recover plaintext, keys, or structural weaknesses.",
+    "example": "",
+    "tags": ["analysis", "codebreaking", "breaking"]
+  },
+  {
+    "term": "Cryptogram",
+    "slug": "cryptogram",
+    "category": "general",
+    "definition": "An encrypted message presented as a puzzle or target for cryptanalysis.",
+    "example": "",
+    "tags": ["ciphertext", "puzzle", "message"]
+  },
+  {
+    "term": "Cryptography",
+    "slug": "cryptography",
+    "category": "general",
+    "definition": "The discipline of protecting messages by transforming them into unreadable or concealed forms.",
+    "example": "",
+    "tags": ["encryption", "security", "hidden writing"]
+  },
+  {
+    "term": "Cryptology",
+    "slug": "cryptology",
+    "category": "general",
+    "definition": "The broader field that includes both cryptography and cryptanalysis.",
+    "example": "",
+    "tags": ["cryptography", "cryptanalysis", "field"]
+  },
+  {
+    "term": "CrypTool",
+    "slug": "cryptool",
+    "category": "software",
+    "definition": "An open source educational project that provides software for learning and experimenting with cryptography and cryptanalysis.",
+    "example": "",
+    "tags": ["software", "education", "tools"]
+  },
+  {
+    "term": "DCT",
+    "slug": "dct",
+    "category": "abbreviation",
+    "definition": "Abbreviation for double columnar transposition.",
+    "example": "",
+    "tags": ["double columnar transposition", "transposition"]
+  },
+  {
+    "term": "Decipher",
+    "slug": "decipher",
+    "category": "cryptanalysis",
+    "definition": "To solve or break an encrypted message, often by recovering the plaintext, key, or method.",
+    "example": "",
+    "tags": ["solve", "break", "cryptanalysis"]
+  },
+  {
+    "term": "Decryption",
+    "slug": "decryption",
+    "category": "general",
+    "definition": "The intended process of converting ciphertext back into plaintext using the correct method and usually the correct key.",
+    "example": "",
+    "tags": ["plaintext", "key", "ciphertext"]
+  },
+  {
+    "term": "Digraph",
+    "slug": "digraph",
+    "category": "text unit",
+    "definition": "A group of two letters. Also called a bigram or digram.",
+    "example": "TH, HE, ER, and AA are digraphs.",
+    "tags": ["bigram", "digram", "letter pair"]
+  },
+  {
+    "term": "Digraph substitution",
+    "slug": "digraph-substitution",
+    "category": "substitution",
+    "definition": "A substitution method that encrypts pairs of letters rather than single letters.",
+    "example": "The Playfair cipher is a well-known digraph substitution cipher.",
+    "tags": ["substitution", "digraph", "Playfair"]
+  },
+  {
+    "term": "Double columnar transposition",
+    "slug": "double-columnar-transposition",
+    "category": "transposition",
+    "definition": "A cipher that applies columnar transposition twice, often with one or two keys, to make the letter order harder to reconstruct.",
+    "example": "",
+    "tags": ["DCT", "transposition", "columns"]
+  },
+  {
+    "term": "Dunin-Schmeh substitution",
+    "slug": "dunin-schmeh-substitution",
+    "category": "substitution",
+    "definition": "A recreational substitution cipher variant associated with hidden puzzle messages and metapuzzles.",
+    "example": "",
+    "tags": ["substitution", "puzzle", "metapuzzle"]
+  },
+  {
+    "term": "Enigma",
+    "slug": "enigma",
+    "category": "cipher machine",
+    "definition": "An electromechanical rotor cipher machine used by Germany during the Second World War.",
+    "example": "",
+    "tags": ["machine cipher", "rotor", "WWII"]
+  },
+  {
+    "term": "Exclusive-or operation",
+    "slug": "exclusive-or-operation",
+    "category": "binary operation",
+    "definition": "A binary operation where matching bits produce 0 and different bits produce 1. XOR is widely used in modern cryptographic operations.",
+    "example": "1 XOR 1 = 0, while 1 XOR 0 = 1.",
+    "tags": ["XOR", "binary", "bitwise"]
+  },
+  {
+    "term": "Freemason's cipher",
+    "slug": "freemasons-cipher",
+    "category": "substitution",
+    "definition": "Another name for the Pigpen cipher.",
+    "example": "",
+    "tags": ["Pigpen", "symbols", "substitution"]
+  },
+  {
+    "term": "Frequency analysis",
+    "slug": "frequency-analysis",
+    "category": "cryptanalysis",
+    "definition": "A technique that counts how often letters or groups of letters occur in ciphertext and compares them with expected language patterns.",
+    "example": "",
+    "tags": ["statistics", "letters", "analysis"]
+  },
+  {
+    "term": "Heptagraph",
+    "slug": "heptagraph",
+    "category": "text unit",
+    "definition": "A sequence of seven letters.",
+    "example": "",
+    "tags": ["letter group", "n-gram", "seven letters"]
+  },
+  {
+    "term": "Hexagraph",
+    "slug": "hexagraph",
+    "category": "text unit",
+    "definition": "A sequence of six letters.",
+    "example": "",
+    "tags": ["letter group", "n-gram", "six letters"]
+  },
+  {
+    "term": "Homophones",
+    "slug": "homophones",
+    "category": "substitution",
+    "definition": "Multiple ciphertext symbols that can represent the same plaintext letter.",
+    "example": "",
+    "tags": ["homophonic cipher", "substitution", "symbols"]
+  },
+  {
+    "term": "Homophonic cipher",
+    "slug": "homophonic-cipher",
+    "category": "substitution",
+    "definition": "A substitution cipher where common plaintext letters may have several possible ciphertext symbols.",
+    "example": "",
+    "tags": ["substitution", "homophones", "frequency masking"]
+  },
+  {
+    "term": "Index of Coincidence",
+    "slug": "index-of-coincidence",
+    "category": "analysis",
+    "definition": "A statistic that estimates how likely two randomly selected letters from a text are to be identical.",
+    "example": "",
+    "tags": ["IC", "statistics", "frequency analysis"]
+  },
+  {
+    "term": "Key",
+    "slug": "key",
+    "category": "general",
+    "definition": "Secret or required information used to encrypt or decrypt a message.",
+    "example": "",
+    "tags": ["secret", "decryption", "encryption"]
+  },
+  {
+    "term": "Keyword",
+    "slug": "keyword",
+    "category": "general",
+    "definition": "A memorable word or phrase used to derive or organize a cipher key.",
+    "example": "",
+    "tags": ["key", "memory aid", "cipher setup"]
+  },
+  {
+    "term": "Manual cipher",
+    "slug": "manual-cipher",
+    "category": "classical cipher",
+    "definition": "A cipher that can be used with pencil, paper, or simple mechanical aids rather than computers or complex machines.",
+    "example": "",
+    "tags": ["classical cipher", "paper and pencil"]
+  },
+  {
+    "term": "Morse code",
+    "slug": "morse-code",
+    "category": "encoding",
+    "definition": "A communication system that represents characters using short and long signals. It is an encoding system, not encryption.",
+    "example": "",
+    "tags": ["dots and dashes", "telegraph", "encoding"]
+  },
+  {
+    "term": "Nomenclator",
+    "slug": "nomenclator",
+    "category": "code system",
+    "definition": "A hybrid system that combines letter substitution with codegroups for common words, names, or phrases.",
+    "example": "",
+    "tags": ["code", "substitution", "codebook"]
+  },
+  {
+    "term": "Null",
+    "slug": "null",
+    "category": "cipher technique",
+    "definition": "A meaningless character or symbol inserted into ciphertext to mislead analysis.",
+    "example": "",
+    "tags": ["padding", "misdirection", "noise"]
+  },
+  {
+    "term": "Octagraph",
+    "slug": "octagraph",
+    "category": "text unit",
+    "definition": "A sequence of eight letters.",
+    "example": "",
+    "tags": ["letter group", "n-gram", "eight letters"]
+  },
+  {
+    "term": "One-time pad",
+    "slug": "one-time-pad",
+    "category": "substitution",
+    "definition": "An encryption method that combines plaintext with a truly random key used only once. When implemented correctly, it cannot be broken by cryptanalysis.",
+    "example": "",
+    "tags": ["OTP", "random key", "Vernam"]
+  },
+  {
+    "term": "Patristocrat",
+    "slug": "patristocrat",
+    "category": "substitution",
+    "definition": "A simple substitution cipher where spaces and punctuation are removed before or during encryption.",
+    "example": "",
+    "tags": ["substitution", "no spaces", "classical cipher"]
+  },
+  {
+    "term": "Pentagraph",
+    "slug": "pentagraph",
+    "category": "text unit",
+    "definition": "A sequence of five letters.",
+    "example": "OFTHE is a common English pentagraph.",
+    "tags": ["letter group", "n-gram", "five letters"]
+  },
+  {
+    "term": "Pigpen cipher",
+    "slug": "pigpen-cipher",
+    "category": "substitution",
+    "definition": "A symbolic substitution cipher where letters are replaced by marks derived from grid-like shapes.",
+    "example": "",
+    "tags": ["symbols", "Freemason", "substitution"]
+  },
+  {
+    "term": "Plaintext",
+    "slug": "plaintext",
+    "category": "general",
+    "definition": "The original readable message before encryption, or the recovered readable message after successful decryption or cryptanalysis.",
+    "example": "",
+    "tags": ["message", "readable text", "decryption"]
+  },
+  {
+    "term": "Playfair cipher",
+    "slug": "playfair-cipher",
+    "category": "substitution",
+    "definition": "A digraph substitution cipher that encrypts letter pairs using a square alphabet table and a set of positional rules.",
+    "example": "",
+    "tags": ["digraph", "substitution", "classical cipher"]
+  },
+  {
+    "term": "Polyalphabetic cipher",
+    "slug": "polyalphabetic-cipher",
+    "category": "substitution",
+    "definition": "A substitution cipher that uses multiple cipher alphabets instead of one fixed alphabet.",
+    "example": "The Vigenère cipher is a classic polyalphabetic cipher.",
+    "tags": ["substitution", "multiple alphabets", "Vigenere"]
+  },
+  {
+    "term": "ROT-13",
+    "slug": "rot-13",
+    "category": "substitution",
+    "definition": "A Caesar shift of 13 positions. Applying ROT-13 twice returns the original text.",
+    "example": "A becomes N, and N becomes A.",
+    "tags": ["Caesar cipher", "shift", "reversible"]
+  },
+  {
+    "term": "Shorthand",
+    "slug": "shorthand",
+    "category": "writing system",
+    "definition": "A fast writing system that uses shortened symbols or forms. It may obscure text but is not normally considered strong encryption.",
+    "example": "",
+    "tags": ["writing", "stenography", "symbols"]
+  },
+  {
+    "term": "Simple substitution",
+    "slug": "simple-substitution",
+    "category": "substitution",
+    "definition": "A cipher where each plaintext letter is consistently replaced by one corresponding ciphertext letter.",
+    "example": "",
+    "tags": ["monoalphabetic", "substitution", "mapping"]
+  },
+  {
+    "term": "Steganography",
+    "slug": "steganography",
+    "category": "information hiding",
+    "definition": "The practice of hiding the existence of a message rather than merely making the message unreadable.",
+    "example": "A message may be hidden inside an image file or concealed through selected letters in a longer text.",
+    "tags": ["hidden message", "concealment", "information hiding"]
+  },
+  {
+    "term": "Stenography",
+    "slug": "stenography",
+    "category": "writing system",
+    "definition": "Another term for shorthand writing.",
+    "example": "",
+    "tags": ["shorthand", "writing"]
+  },
+  {
+    "term": "Substitution cipher",
+    "slug": "substitution-cipher",
+    "category": "substitution",
+    "definition": "A cipher that replaces letters, symbols, or groups of letters with other letters, symbols, or groups.",
+    "example": "",
+    "tags": ["replacement", "mapping", "cipher"]
+  },
+  {
+    "term": "Super-encryption",
+    "slug": "super-encryption",
+    "category": "cipher technique",
+    "definition": "A second layer of encryption applied to material that has already been encrypted.",
+    "example": "",
+    "tags": ["layered encryption", "cipher technique"]
+  },
+  {
+    "term": "Tetragraph",
+    "slug": "tetragraph",
+    "category": "text unit",
+    "definition": "A sequence of four letters. Also called a tetragram or quadgram.",
+    "example": "TION is a frequent English tetragraph.",
+    "tags": ["quadgram", "n-gram", "four letters"]
+  },
+  {
+    "term": "Transposition cipher",
+    "slug": "transposition-cipher",
+    "category": "transposition",
+    "definition": "A cipher that keeps the original letters but changes their order.",
+    "example": "",
+    "tags": ["reordering", "scrambling", "cipher"]
+  },
+  {
+    "term": "Trigraph",
+    "slug": "trigraph",
+    "category": "text unit",
+    "definition": "A sequence of three letters. Also called a trigram.",
+    "example": "THE is a common English trigraph.",
+    "tags": ["trigram", "n-gram", "three letters"]
+  },
+  {
+    "term": "Turning grille",
+    "slug": "turning-grille",
+    "category": "transposition",
+    "definition": "A stencil-based encryption tool where letters are written through openings, then the grille is rotated to continue filling the message.",
+    "example": "",
+    "tags": ["grille", "transposition", "stencil"]
+  },
+  {
+    "term": "Vigenere cipher",
+    "slug": "vigenere-cipher",
+    "category": "substitution",
+    "definition": "A polyalphabetic substitution cipher that uses a repeating key to choose different Caesar-style shifts across the message.",
+    "example": "",
+    "tags": ["polyalphabetic", "keyword", "classical cipher"]
+  }
+]

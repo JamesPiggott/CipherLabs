@@ -10,11 +10,14 @@ from cipher.tools.frequency_analysis import FrequencyAnalysis
 from cipher.tools.index_of_coincidence import IndexOfCoincidence
 from cipher.tools.repeated_sequences import RepeatedSequences
 from cipher.tools.language_frequency_match import LanguageFrequencyMatch
+from cipher.tools.substitution_mapping_confidence import SubstitutionMappingConfidence
 from cipher.tools.word_pattern_analysis import WordPatternAnalysis
 from cipher.tools.digram_similarity import DigramSimilarity
 from cipher.tools.substitution_cipher import SubstitutionCipher
 from cipher.tools.substitution_mapping_assistant import SubstitutionMappingAssistant
 from cipher.tools.workbench.cipher_workbench_builder import CipherWorkbenchBuilder
+from cipher.tools.cipher_classifier import CipherClassifier
+from cipher.tools.partial_plaintext_builder import PartialPlaintextBuilder
 
 ciphers_blueprint = Blueprint("ciphers", __name__, template_folder="../../templates/ciphers")
 
@@ -57,6 +60,26 @@ def add_cipher():
     return render_template("ciphers/add.html")
 
 
+@ciphers_blueprint.route("/<cipher_id>/delete", methods=["POST"])
+@login_required
+def delete_cipher(cipher_id):
+    try:
+        CipherMessageProcessor().delete_cipher(
+            cipher_id=cipher_id,
+            user_id=current_user.id,
+            is_admin=getattr(current_user, "is_admin", False),
+        )
+        flash("Cipher deleted.", "success")
+
+    except PermissionError as error:
+        flash(str(error), "danger")
+
+    except ValueError as error:
+        flash(str(error), "danger")
+
+    return redirect(url_for("ciphers.list_ciphers"))
+
+
 @ciphers_blueprint.route("/<cipher_id>")
 def view_cipher(cipher_id):
     cipher = CipherMessageProcessor().get_cipher(cipher_id)
@@ -75,10 +98,16 @@ def view_cipher(cipher_id):
     word_pattern_analysis = WordPatternAnalysis.analyze(cipher.ciphertext)
     digram_similarity = DigramSimilarity.analyze(cipher.ciphertext)
 
+    cipher_classification = CipherClassifier.classify(
+        text=cipher.ciphertext,
+        declared_cipher_type=cipher.cipher_type,
+    )
+
     workbench = CipherWorkbenchBuilder.build(
         cipher=cipher,
         index_of_coincidence=index_of_coincidence,
         repeated_sequences=repeated_sequences,
+        cipher_classification=cipher_classification,
     )
 
     workspace = None
@@ -100,6 +129,18 @@ def view_cipher(cipher_id):
         candidate_limit=8,
     )
 
+    mapping_confidence = SubstitutionMappingConfidence.build_from_assistant(
+        substitution_mapping_assistant
+    )
+
+    partial_plaintext = PartialPlaintextBuilder.build(
+        ciphertext=cipher.ciphertext,
+        workspace_mapping=workspace_mapping,
+        mapping_confidence=mapping_confidence,
+        include_confident_suggestions=True,
+        minimum_confidence=0.75,
+    )
+
     return render_template(
         "ciphers/detail.html",
         cipher=cipher,
@@ -114,6 +155,9 @@ def view_cipher(cipher_id):
         word_pattern_analysis=word_pattern_analysis,
         digram_similarity=digram_similarity,
         substitution_mapping_assistant=substitution_mapping_assistant,
+        cipher_classification=cipher_classification,
+        mapping_confidence=mapping_confidence,
+        partial_plaintext=partial_plaintext,
         workbench=workbench,
     )
 

@@ -488,3 +488,146 @@ input::placeholder {
     color: var(--cl-text-muted);
     font-size: 0.7rem;
 }
+
+/* =========================================================
+   Glossary
+   ========================================================= */
+
+.glossary-term-card {
+    scroll-margin-top: 5rem;
+}
+
+.glossary-term-card p {
+    color: var(--cl-text);
+    line-height: 1.6;
+}
+
+/* =========================================================
+   CipherLabs Modal
+   ========================================================= */
+
+.cipherlabs-modal {
+    background: var(--cl-card);
+    border: 1px solid var(--cl-border);
+    color: var(--cl-text);
+}
+
+.cipherlabs-modal .modal-header {
+    background: var(--cl-card-light);
+    border-bottom: 1px solid var(--cl-border);
+}
+
+.cipherlabs-modal .modal-footer {
+    border-top: 1px solid var(--cl-border);
+}
+
+.cipherlabs-modal .modal-title {
+    color: var(--cl-text-strong);
+}
+
+.cipherlabs-modal .btn-close {
+    filter: invert(1);
+}
+
+.modal-backdrop.show {
+    opacity: 0.75;
+}
+
+/* =========================================================
+   Mapping Confidence
+   ========================================================= */
+
+.mapping-confidence-bar {
+    width: 100%;
+    height: 0.65rem;
+    background: var(--cl-bg-dark);
+    border: 1px solid var(--cl-border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.mapping-confidence-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.mapping-confidence-strong {
+    background: var(--cl-success);
+}
+
+.mapping-confidence-medium {
+    background: var(--cl-warning);
+}
+
+.mapping-confidence-weak {
+    background: var(--cl-danger);
+}
+
+/* =========================================================
+   Progressive Plaintext Reveal
+   ========================================================= */
+
+.partial-plaintext-progress {
+    width: 100%;
+    height: 0.7rem;
+    background: var(--cl-bg-dark);
+    border: 1px solid var(--cl-border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.partial-plaintext-progress-fill {
+    height: 100%;
+    background: var(--cl-accent);
+    border-radius: 999px;
+}
+
+.partial-plaintext-output {
+    background: var(--cl-bg-dark);
+    border: 1px solid var(--cl-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    font-size: 1.05rem;
+    line-height: 1.9;
+    word-break: break-word;
+}
+
+.partial-char {
+    display: inline-block;
+    min-width: 0.65rem;
+    text-align: center;
+}
+
+.partial-char-confirmed {
+    color: var(--cl-success);
+    font-weight: 700;
+}
+
+.partial-char-suggested {
+    color: var(--cl-accent);
+    font-weight: 600;
+}
+
+.partial-char-unknown {
+    color: var(--cl-text-faint);
+}
+
+.partial-char-separator {
+    color: var(--cl-text-muted);
+}
+
+/* =========================================================
+   Substitution Solver Preview
+   ========================================================= */
+
+.substitution-preview-output {
+    background: var(--cl-bg-dark);
+    color: var(--cl-text);
+    border: 1px solid var(--cl-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    min-height: 120px;
+    white-space: pre-wrap;
+}

@@ -19,10 +19,10 @@
 {% if ciphers %}
     <div class="list-group">
         {% for c in ciphers %}
-            <a href="{{ url_for('ciphers.view_cipher', cipher_id=c.id) }}"
-               class="list-group-item list-group-item-action">
+            <div class="list-group-item">
                 <div class="d-flex justify-content-between align-items-start gap-3">
-                    <div>
+                    <a href="{{ url_for('ciphers.view_cipher', cipher_id=c.id) }}"
+                       class="text-decoration-none flex-grow-1">
                         <h5 class="mb-2">{{ c.title }}</h5>
 
                         <p class="cipher-list-preview mb-2">
@@ -33,11 +33,79 @@
                             Type: {{ c.cipher_type or "Unknown" }} |
                             Language: {{ c.suspected_language or "Unknown" }}
                         </small>
-                    </div>
+                    </a>
 
-                    <span class="badge bg-secondary">{{ c.status }}</span>
+                    <div class="d-flex flex-column align-items-end gap-2">
+                        <span class="badge bg-secondary">{{ c.status }}</span>
+
+                    {% if current_user.is_authenticated and (current_user.is_admin or c.created_by|string == current_user.id|string) %}
+
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteCipherModal{{ c.id }}">
+                            Delete
+                        </button>
+
+                        <div class="modal fade"
+                             id="deleteCipherModal{{ c.id }}"
+                             tabindex="-1"
+                             aria-hidden="true">
+
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content cipherlabs-modal">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Delete Cipher
+                                        </h5>
+
+                                        <button type="button"
+                                                class="btn-close btn-close-white"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p class="mb-2">
+                                            Are you sure you want to delete:
+                                        </p>
+
+                                        <div class="fw-semibold">
+                                            {{ c.title }}
+                                        </div>
+
+                                        <div class="text-muted small mt-2">
+                                            This action cannot be undone.
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button"
+                                                class="btn btn-outline-secondary"
+                                                data-bs-dismiss="modal">
+                                            Cancel
+                                        </button>
+
+                                        <form method="post"
+                                              action="{{ url_for('ciphers.delete_cipher', cipher_id=c.id) }}">
+                                            <button type="submit"
+                                                    class="btn btn-danger">
+                                                Delete Cipher
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+                    </div>
                 </div>
-            </a>
+            </div>
         {% endfor %}
     </div>
 {% else %}

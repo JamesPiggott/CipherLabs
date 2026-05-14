@@ -1,0 +1,65 @@
+{% if cipher_classification %}
+    <div class="card mb-3">
+        <div class="card-header">
+            Cipher Classification
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <div class="text-muted small">Likely type</div>
+                    <div class="h5 mb-0">
+                        {{ cipher_classification.primary_type }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted small">Confidence</div>
+                    <div class="h5 mb-0">
+                        {{ (cipher_classification.confidence * 100) | round | int }}%
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="text-muted small">Index of Coincidence</div>
+                    <div class="h5 mb-0">
+                        {{ cipher_classification.ioc }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="text-muted small">Signals</div>
+                <ul class="mt-2 mb-0">
+                    {% for signal in cipher_classification.signals %}
+                        <li>{{ signal }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="workbench-recommendation mb-3">
+                <small class="text-muted">Recommended next step</small>
+                <div>{{ cipher_classification.recommended_next_step }}</div>
+            </div>
+
+            {% if cipher_classification.next_actions %}
+                <div class="mt-4">
+                    <div class="text-muted small mb-2">Guided next actions</div>
+
+                    {% for action in cipher_classification.next_actions %}
+                        <div class="recommended-tool mb-2">
+                            <strong>{{ action.title }}</strong>
+                            <div class="text-muted small">
+                                {{ action.reason }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Cipher classification is not available.
+    </div>
+{% endif %}

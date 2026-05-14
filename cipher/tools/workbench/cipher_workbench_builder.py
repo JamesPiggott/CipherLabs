@@ -40,9 +40,25 @@ class CipherWorkbenchBuilder:
         return (value or "").strip().lower()
 
     @staticmethod
-    def build(cipher, index_of_coincidence=None, repeated_sequences=None):
+    def build(
+            cipher,
+            index_of_coincidence=None,
+            repeated_sequences=None,
+            cipher_classification=None,
+    ):
         cipher_type = CipherWorkbenchBuilder.normalize(cipher.cipher_type)
         suspected_language = CipherWorkbenchBuilder.normalize(cipher.suspected_language)
+
+        classification_type = ""
+        classification_recommended_next_step = None
+
+        if cipher_classification:
+            classification_type = CipherWorkbenchBuilder.normalize(
+                cipher_classification.get("primary_type")
+            )
+            classification_recommended_next_step = cipher_classification.get(
+                "recommended_next_step"
+            )
 
         ioc_value = 0
 
@@ -51,43 +67,68 @@ class CipherWorkbenchBuilder:
 
         has_repeated_sequences = bool(repeated_sequences)
 
-        looks_like_substitution = (
-            "substitution" in cipher_type
-            or "monoalphabetic" in cipher_type
-            or ioc_value >= 0.06
+        looks_like_caesar = (
+                "caesar" in cipher_type
+                or "caesar" in classification_type
         )
 
-        looks_like_caesar = "caesar" in cipher_type
+        looks_like_substitution = (
+                "substitution" in cipher_type
+                or "monoalphabetic" in cipher_type
+                or "aristocrat" in classification_type
+                or "patristocrat" in classification_type
+                or ioc_value >= 0.06
+        )
 
         looks_like_polyalphabetic = (
-            "vigenere" in cipher_type
-            or "vigenère" in cipher_type
-            or "polyalphabetic" in cipher_type
-            or ioc_value < 0.045
-            or has_repeated_sequences
+                "vigenere" in cipher_type
+                or "vigenère" in cipher_type
+                or "polyalphabetic" in cipher_type
+                or "polyalphabetic" in classification_type
+                or ioc_value < 0.045
+                or has_repeated_sequences
         )
 
-        if looks_like_substitution:
-            recommended_path = (
-                "Start with frequency and word patterns, then use the substitution assistant "
-                "to test candidate mappings."
-            )
-            primary_hypothesis = "Monoalphabetic substitution"
-        elif looks_like_caesar:
+        if looks_like_caesar:
             recommended_path = (
                 "Start with Caesar brute force, then validate the best result using language hints."
             )
             primary_hypothesis = "Caesar shift"
+
+        elif looks_like_substitution:
+            if "aristocrat" in classification_type:
+                primary_hypothesis = "Aristocrat"
+                recommended_path = (
+                    "Word boundaries appear to be preserved. Start with frequency analysis, "
+                    "then use word patterns and the substitution assistant."
+                )
+            elif "patristocrat" in classification_type:
+                primary_hypothesis = "Patristocrat"
+                recommended_path = (
+                    "Word boundaries appear to be missing. Start with frequency analysis, "
+                    "then use substitution tools carefully because word-pattern analysis is less direct."
+                )
+            else:
+                primary_hypothesis = "Monoalphabetic substitution"
+                recommended_path = (
+                    "Start with frequency and word patterns, then use the substitution assistant "
+                    "to test candidate mappings."
+                )
+
         elif looks_like_polyalphabetic:
             recommended_path = (
                 "Start with repeated sequences and IoC. This may require a future Vigenère/Kasiski workflow."
             )
             primary_hypothesis = "Possible polyalphabetic cipher"
+
         else:
             recommended_path = (
                 "Start with identification tools, then enable analysis widgets as patterns emerge."
             )
             primary_hypothesis = "Unknown"
+
+        if classification_recommended_next_step:
+            recommended_path = classification_recommended_next_step
 
         widgets = [
             WorkbenchWidget(
@@ -98,6 +139,16 @@ class CipherWorkbenchBuilder:
                 description="Review the original message and known plaintext.",
                 recommended=True,
                 order=10,
+                default_open=True,
+            ),
+            WorkbenchWidget(
+                widget_id="cipher-classification",
+                title="Cipher Classification",
+                template="ciphers/workbench/widgets/_cipher_classification.html",
+                phase="identify",
+                description="Estimate the likely cipher family and starting strategy.",
+                recommended=True,
+                order=15,
                 default_open=True,
             ),
             WorkbenchWidget(
@@ -144,7 +195,7 @@ class CipherWorkbenchBuilder:
                 template="ciphers/workbench/widgets/_word_patterns.html",
                 phase="analyze",
                 description="Group cipher words by repeated-letter structure.",
-                recommended=looks_like_substitution,
+                recommended=looks_like_substitution and "patristocrat" not in classification_type,
                 order=30,
             ),
             WorkbenchWidget(
@@ -166,13 +217,31 @@ class CipherWorkbenchBuilder:
                 order=20,
             ),
             WorkbenchWidget(
+                widget_id="partial-plaintext",
+                title="Plaintext Reveal",
+                template="ciphers/workbench/widgets/_partial_plaintext.html",
+                phase="solve",
+                description="Show the emerging plaintext from confirmed and high-confidence mappings.",
+                recommended=looks_like_substitution,
+                order=25,
+            ),
+            WorkbenchWidget(
                 widget_id="substitution-assistant",
                 title="Substitution Assistant",
                 template="ciphers/workbench/widgets/_substitution_assistant.html",
                 phase="solve",
                 description="Rank candidate words and mapping suggestions.",
-                recommended=looks_like_substitution,
+                recommended=looks_like_substitution and "patristocrat" not in classification_type,
                 order=30,
+            ),
+            WorkbenchWidget(
+                widget_id="mapping-confidence",
+                title="Mapping Confidence",
+                template="ciphers/workbench/widgets/_mapping_confidence.html",
+                phase="solve",
+                description="Show which suggested letter mappings have the strongest evidence.",
+                recommended=looks_like_substitution,
+                order=35,
             ),
             WorkbenchWidget(
                 widget_id="substitution-key-tool",
@@ -231,4 +300,5 @@ class CipherWorkbenchBuilder:
             "looks_like_substitution": looks_like_substitution,
             "looks_like_caesar": looks_like_caesar,
             "looks_like_polyalphabetic": looks_like_polyalphabetic,
+            "classification_type": classification_type,
         }

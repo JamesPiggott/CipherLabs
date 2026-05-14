@@ -43,3 +43,14 @@ class CipherMessageProcessor:
 
     def get_cipher(self, cipher_id):
         return self.db.retrieve_by_id(cipher_id)
+
+    def delete_cipher(self, cipher_id, user_id=None, is_admin=False):
+        cipher = self.get_cipher(cipher_id)
+
+        if not cipher:
+            raise ValueError("Cipher not found.")
+
+        if not is_admin and str(cipher.created_by) != str(user_id):
+            raise PermissionError("You are not allowed to delete this cipher.")
+
+        return self.db.delete_by_id(cipher_id)

@@ -1,0 +1,85 @@
+<!-- templates/ciphers/workbench/widgets/_partial_plaintext.html -->
+
+<div class="card mb-3">
+    <div class="card-header">
+        Progressive Plaintext Reveal
+    </div>
+
+    <div class="card-body">
+        {% if partial_plaintext and partial_plaintext.available %}
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <small class="text-muted">Solved</small>
+                    <div class="h5 mb-0">
+                        {{ partial_plaintext.solve_percentage }}%
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <small class="text-muted">Solved letters</small>
+                    <div class="h5 mb-0">
+                        {{ partial_plaintext.solved_letters }}
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <small class="text-muted">Confirmed</small>
+                    <div class="h5 mb-0">
+                        {{ partial_plaintext.confirmed_letters }}
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <small class="text-muted">Suggested</small>
+                    <div class="h5 mb-0">
+                        {{ partial_plaintext.suggested_letters }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="partial-plaintext-progress mb-3">
+                <div class="partial-plaintext-progress-fill"
+                     style="width: {{ partial_plaintext.solve_percentage }}%;">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <small class="text-muted">
+                    Plaintext preview
+                </small>
+
+                <div class="partial-plaintext-output mt-2">
+                    {% for char in partial_plaintext["characters"] %}
+                        {% if char.type == "separator" %}
+                            <span class="partial-char partial-char-separator">{{ char.plain_char }}</span>
+                        {% elif char.source == "confirmed" %}
+                            <span class="partial-char partial-char-confirmed"
+                                  title="Confirmed mapping from workspace">
+                                {{ char.plain_char }}
+                            </span>
+                        {% elif char.source == "suggested" %}
+                            <span class="partial-char partial-char-suggested"
+                                  title="Suggested high-confidence mapping">
+                                {{ char.plain_char }}
+                            </span>
+                        {% else %}
+                            <span class="partial-char partial-char-unknown"
+                                  title="Unknown letter">
+                                _
+                            </span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="small text-muted">
+                Confirmed mappings come from the saved workspace. Suggested letters are only shown when confidence is at least
+                {{ (partial_plaintext.minimum_confidence * 100) | round | int }}%.
+            </div>
+        {% else %}
+            <div class="alert alert-warning mb-0">
+                Plaintext preview is not available.
+            </div>
+        {% endif %}
+    </div>
+</div>
