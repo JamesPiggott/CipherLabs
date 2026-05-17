@@ -631,3 +631,34 @@ input::placeholder {
     min-height: 120px;
     white-space: pre-wrap;
 }
+
+/* =========================================================
+   CipherLabs Modal
+   ========================================================= */
+
+.cipherlabs-modal {
+    background: var(--cl-card);
+    border: 1px solid var(--cl-border);
+    color: var(--cl-text);
+}
+
+.cipherlabs-modal .modal-header {
+    background: var(--cl-card-light);
+    border-bottom: 1px solid var(--cl-border);
+}
+
+.cipherlabs-modal .modal-footer {
+    border-top: 1px solid var(--cl-border);
+}
+
+.cipherlabs-modal .modal-title {
+    color: var(--cl-text-strong);
+}
+
+.cipherlabs-modal .btn-close {
+    filter: invert(1);
+}
+
+.modal-backdrop.show {
+    opacity: 0.75;
+}

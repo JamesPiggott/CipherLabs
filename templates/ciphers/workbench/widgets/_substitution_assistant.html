@@ -6,7 +6,7 @@
     <div class="card-body">
         <p class="text-muted">
             This uses word patterns to suggest possible plaintext letters for each cipher letter.
-            It is an assistant, not a guaranteed solver.
+            Suggestions can be applied directly to the substitution workspace.
         </p>
 
         {% if not substitution_mapping_assistant.available %}
@@ -14,55 +14,49 @@
                 {{ substitution_mapping_assistant.message }}
             </div>
         {% else %}
-            <p>
-                Solved letters:
-                <strong>{{ substitution_mapping_assistant.solved_count }}</strong> / 26
-            </p>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <small class="text-muted">Solved letters</small>
+                    <div class="h5 mb-0">
+                        {{ substitution_mapping_assistant.solved_count }} / 26
+                    </div>
+                </div>
 
-            <div class="table-responsive mb-4">
-                <table class="table table-sm table-bordered align-middle">
-                    <thead>
-                        <tr>
-                            <th>Cipher Letter</th>
-                            <th>Possible Plain Letters</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for cipher_letter, possible_letters in substitution_mapping_assistant.mapping.items() %}
-                            <tr>
-                                <td><strong>{{ cipher_letter }}</strong></td>
-                                <td>
-                                    {% if possible_letters %}
-                                        {% for letter in possible_letters %}
-                                            <span class="badge bg-secondary me-1">{{ letter }}</span>
-                                        {% endfor %}
-                                    {% else %}
-                                        <span class="text-muted">Any</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="col-md-4">
+                    <small class="text-muted">Matched words</small>
+                    <div class="h5 mb-0">
+                        {{ substitution_mapping_assistant.matched_words | length }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Suggested mappings</small>
+                    <div class="h5 mb-0">
+                        {{ substitution_mapping_assistant.suggested_mappings | length }}
+                    </div>
+                </div>
             </div>
 
             {% if substitution_mapping_assistant.suggested_mappings %}
                 <div class="mb-4">
-                    <h6>Suggested Mappings</h6>
-
-                    <p class="text-muted small">
-                        These are heuristic suggestions based on ranked word candidates.
-                        Review them before saving.
-                    </p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <h6 class="mb-1">Suggested Mappings</h6>
+                            <p class="text-muted small mb-0">
+                                Click a suggestion to apply it to the substitution workspace.
+                            </p>
+                        </div>
+                    </div>
 
                     <div class="d-flex flex-wrap gap-2">
                         {% for suggestion in substitution_mapping_assistant.suggested_mappings %}
                             <button type="button"
                                     class="btn btn-outline-success btn-sm apply-single-suggestion"
                                     data-cipher-letter="{{ suggestion.cipher_letter }}"
-                                    data-plain-letter="{{ suggestion.plain_letter }}">
-                                {{ suggestion.cipher_letter }} → {{ suggestion.plain_letter }}
-                                <span class="text-muted">
+                                    data-plain-letter="{{ suggestion.plain_letter }}"
+                                    title="Apply {{ suggestion.cipher_letter }} → {{ suggestion.plain_letter }}">
+                                <strong>{{ suggestion.cipher_letter }} → {{ suggestion.plain_letter }}</strong>
+                                <span class="ms-1">
                                     {{ (suggestion.confidence * 100) | round | int }}%
                                 </span>
                             </button>
@@ -71,9 +65,54 @@
                 </div>
             {% endif %}
 
+            <div class="mb-4">
+                <h6>Possible Letter Mapping</h6>
+
+                <p class="text-muted small">
+                    A narrow set of possible plaintext letters is useful evidence. “Any” means the dictionary patterns did not constrain that cipher letter.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th>Cipher Letter</th>
+                                <th>Possible Plain Letters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cipher_letter, possible_letters in substitution_mapping_assistant.mapping.items() %}
+                                <tr>
+                                    <td><strong>{{ cipher_letter }}</strong></td>
+                                    <td>
+                                        {% if possible_letters %}
+                                            {% for letter in possible_letters %}
+                                                <button type="button"
+                                                        class="btn btn-outline-secondary btn-sm me-1 mb-1 apply-single-suggestion"
+                                                        data-cipher-letter="{{ cipher_letter }}"
+                                                        data-plain-letter="{{ letter }}"
+                                                        title="Apply {{ cipher_letter }} → {{ letter }}">
+                                                    {{ letter }}
+                                                </button>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">Any</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <h6>Ranked Cipher Word Candidates</h6>
 
             {% if substitution_mapping_assistant.matched_words %}
+                <p class="text-muted small">
+                    Candidate buttons apply all letter mappings implied by that word.
+                </p>
+
                 <div class="table-responsive">
                     <table class="table table-sm align-middle">
                         <thead>
@@ -93,10 +132,13 @@
                                     <td>{{ item.candidate_count }}</td>
                                     <td>
                                         {% if item.best_candidate %}
-                                            <span class="badge bg-success">
+                                            <button type="button"
+                                                    class="btn btn-success btn-sm apply-ranked-candidate"
+                                                    data-candidate-mapping='{{ item.best_candidate.mapping | tojson }}'
+                                                    title="Apply best guess {{ item.best_candidate.word }}">
                                                 {{ item.best_candidate.word }}
-                                            </span>
-                                            <small class="text-muted">
+                                            </button>
+                                            <small class="text-muted ms-1">
                                                 score {{ item.best_candidate.score }}
                                             </small>
                                         {% else %}
@@ -107,9 +149,10 @@
                                         {% for candidate in item.ranked_candidates %}
                                             <button type="button"
                                                     class="btn btn-outline-secondary btn-sm mb-1 apply-ranked-candidate"
-                                                    data-candidate-mapping='{{ candidate.mapping | tojson }}'>
+                                                    data-candidate-mapping='{{ candidate.mapping | tojson }}'
+                                                    title="Apply candidate {{ candidate.word }}">
                                                 {{ candidate.word }}
-                                                <span class="text-muted">
+                                                <span class="ms-1 text-muted">
                                                     {{ candidate.score }}
                                                 </span>
                                             </button>

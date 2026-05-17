@@ -10,7 +10,7 @@ services:
       POSTGRES_HOST: cipherlabs-db
       POSTGRES_PORT: 5432
       POSTGRES_DB: cipherlabs
-      POSTGRES_USER: cipherlabs
+      POSTGRES_USER: cipherlab_user
       POSTGRES_PASSWORD: change-this-db-password
     depends_on:
       - cipherlabs-db
@@ -21,7 +21,7 @@ services:
     container_name: cipherlabs-db
     environment:
       POSTGRES_DB: cipherlabs
-      POSTGRES_USER: cipherlabs
+      POSTGRES_USER: cipherlab_user
       POSTGRES_PASSWORD: change-this-db-password
     volumes:
       - cipherlabs-postgres-data:/var/lib/postgresql/data

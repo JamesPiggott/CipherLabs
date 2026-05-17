@@ -21,3 +21,6 @@ class UserWorkspaceProcessor:
         )
 
         return self.database.upsert_workspace(workspace)
+
+    def migrate_user_workspaces_table(self):
+        return self.database.migrate_table()

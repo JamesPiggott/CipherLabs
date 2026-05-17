@@ -61,7 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const notesField = document.getElementById("workspace-notes");
 
     const workspaceAlertBox = document.getElementById("workspace-save-alert");
+    const workspaceUnsavedAlertBox = document.getElementById("workspace-unsaved-alert");
     const notesAlertBox = document.getElementById("workspace-notes-alert");
+
+    let pendingMapping = null;
 
     function buildMapping() {
         const mapping = {};
@@ -102,18 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         preview.textContent = result;
     }
 
-    function setMappingLetter(cipherLetter, plainLetter) {
-        const input = document.querySelector(
-            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
-        );
-
-        if (!input) {
-            return;
-        }
-
-        input.value = plainLetter;
-    }
-
     function getNotesValue() {
         if (!notesField) {
             return "";
@@ -136,6 +127,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 2500);
     }
 
+    function showUnsavedWorkspaceNotice() {
+        if (!workspaceUnsavedAlertBox) {
+            return;
+        }
+
+        workspaceUnsavedAlertBox.classList.remove("d-none");
+    }
+
+    function hideUnsavedWorkspaceNotice() {
+        if (!workspaceUnsavedAlertBox) {
+            return;
+        }
+
+        workspaceUnsavedAlertBox.classList.add("d-none");
+    }
+
     function saveWorkspace(successMessage, alertBox) {
         fetch(saveUrl, {
             method: "POST",
@@ -151,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.success) {
                 showAlert(alertBox, successMessage, "success");
+                hideUnsavedWorkspaceNotice();
             } else {
                 showAlert(alertBox, "Could not save workspace.", "danger");
             }
@@ -160,19 +168,165 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function getExistingPlainLetter(cipherLetter) {
+        const input = document.querySelector(
+            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
+        );
+
+        if (!input) {
+            return "";
+        }
+
+        return input.value.trim().toUpperCase();
+    }
+
+    function getCipherLetterUsingPlainLetter(plainLetter, exceptCipherLetter) {
+        let existingCipherLetter = "";
+
+        inputs.forEach((input) => {
+            const cipherLetter = input.getAttribute("data-cipher-letter");
+            const currentPlainLetter = input.value.trim().toUpperCase();
+
+            if (
+                currentPlainLetter === plainLetter
+                && cipherLetter !== exceptCipherLetter
+            ) {
+                existingCipherLetter = cipherLetter;
+            }
+        });
+
+        return existingCipherLetter;
+    }
+
+    function detectMappingConflicts(mapping) {
+        const conflicts = [];
+
+        Object.keys(mapping).forEach((cipherLetter) => {
+            const plainLetter = String(mapping[cipherLetter]).trim().toUpperCase();
+
+            if (!plainLetter.match(/^[A-Z]$/)) {
+                return;
+            }
+
+            const existingPlainLetter = getExistingPlainLetter(cipherLetter);
+
+            if (
+                existingPlainLetter
+                && existingPlainLetter !== plainLetter
+            ) {
+                conflicts.push(
+                    cipherLetter + " is already mapped to " + existingPlainLetter +
+                    ", but this suggestion maps it to " + plainLetter + "."
+                );
+            }
+
+            const existingCipherLetter = getCipherLetterUsingPlainLetter(
+                plainLetter,
+                cipherLetter
+            );
+
+            if (existingCipherLetter) {
+                conflicts.push(
+                    plainLetter + " is already used by " + existingCipherLetter +
+                    ", but this suggestion also maps " + cipherLetter +
+                    " to " + plainLetter + "."
+                );
+            }
+        });
+
+        return conflicts;
+    }
+
+    function setMappingLetterWithoutConflictCheck(cipherLetter, plainLetter) {
+        const input = document.querySelector(
+            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
+        );
+
+        if (!input) {
+            return;
+        }
+
+        input.value = String(plainLetter).trim().toUpperCase();
+
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        input.dispatchEvent(new Event("keyup", { bubbles: true }));
+    }
+
+    function applyMapping(mapping) {
+        Object.keys(mapping).forEach((cipherLetter) => {
+            setMappingLetterWithoutConflictCheck(
+                cipherLetter,
+                mapping[cipherLetter]
+            );
+        });
+
+        updatePreview();
+        showUnsavedWorkspaceNotice();
+    }
+
+    function showMappingConflictModal(conflicts, mapping) {
+        const modalElement = document.getElementById("mappingConflictModal");
+        const messageElement = document.getElementById("mapping-conflict-message");
+
+        if (!modalElement || !messageElement || !window.bootstrap) {
+            applyMapping(mapping);
+            return;
+        }
+
+        pendingMapping = mapping;
+        messageElement.innerHTML = "";
+
+        const list = document.createElement("ul");
+        list.className = "mb-0";
+
+        conflicts.forEach((conflict) => {
+            const item = document.createElement("li");
+            item.textContent = conflict;
+            list.appendChild(item);
+        });
+
+        messageElement.appendChild(list);
+
+        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+        modal.show();
+    }
+
+    function applyMappingWithConflictCheck(mapping) {
+        const conflicts = detectMappingConflicts(mapping);
+
+        if (conflicts.length > 0) {
+            showMappingConflictModal(conflicts, mapping);
+            return;
+        }
+
+        applyMapping(mapping);
+    }
+
+    function setMappingLetter(cipherLetter, plainLetter) {
+        const mapping = {};
+        mapping[cipherLetter] = plainLetter;
+
+        applyMappingWithConflictCheck(mapping);
+    }
+
     inputs.forEach((input) => {
         input.addEventListener("keyup", function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
             updatePreview();
+            showUnsavedWorkspaceNotice();
         });
 
-        input.addEventListener("change", updatePreview);
+        input.addEventListener("change", function () {
+            updatePreview();
+            showUnsavedWorkspaceNotice();
+        });
     });
 
     if (clearButton) {
         clearButton.addEventListener("click", function () {
             inputs.forEach((input) => input.value = "");
             updatePreview();
+            showUnsavedWorkspaceNotice();
         });
     }
 
@@ -194,21 +348,42 @@ document.addEventListener("DOMContentLoaded", function () {
             const plainLetter = this.getAttribute("data-plain-letter");
 
             setMappingLetter(cipherLetter, plainLetter);
-            updatePreview();
         });
     });
 
     document.querySelectorAll(".apply-ranked-candidate").forEach((button) => {
         button.addEventListener("click", function () {
-            const mapping = JSON.parse(this.getAttribute("data-candidate-mapping"));
+            const rawMapping = this.getAttribute("data-candidate-mapping");
 
-            Object.keys(mapping).forEach((cipherLetter) => {
-                setMappingLetter(cipherLetter, mapping[cipherLetter]);
-            });
+            if (!rawMapping) {
+                return;
+            }
 
-            updatePreview();
+            const mapping = JSON.parse(rawMapping);
+
+            applyMappingWithConflictCheck(mapping);
         });
     });
+
+    const confirmConflictButton = document.getElementById("confirm-conflicting-mapping");
+
+    if (confirmConflictButton) {
+        confirmConflictButton.addEventListener("click", function () {
+            if (!pendingMapping) {
+                return;
+            }
+
+            applyMapping(pendingMapping);
+            pendingMapping = null;
+
+            const modalElement = document.getElementById("mappingConflictModal");
+
+            if (modalElement && window.bootstrap) {
+                const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+                modal.hide();
+            }
+        });
+    }
 
     updatePreview();
 });
