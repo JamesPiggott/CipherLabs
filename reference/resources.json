@@ -1,0 +1,162 @@
+[
+  {
+    "title": "American Cryptogram Association",
+    "url": "https://www.cryptogram.org/",
+    "publisher": "American Cryptogram Association",
+    "category": "Organization",
+    "description": "A long-running organization for recreational cryptanalysis, cipher solving, and cryptogram enthusiasts.",
+    "tags": ["cryptograms", "classical ciphers", "community"]
+  },
+  {
+    "title": "ACA Resource Area",
+    "url": "https://www.cryptogram.org/resource-area/",
+    "publisher": "American Cryptogram Association",
+    "category": "Learning",
+    "description": "Downloadable guides, tutorials, sample issues, and learning material for cipher hobbyists.",
+    "tags": ["tutorials", "beginner", "ACA"]
+  },
+  {
+    "title": "CIA Kryptos Sculpture",
+    "url": "https://www.cia.gov/legacy/headquarters/kryptos-sculpture/",
+    "publisher": "Central Intelligence Agency",
+    "category": "Famous Cipher",
+    "description": "Official CIA background on Kryptos, the encrypted sculpture at CIA headquarters.",
+    "tags": ["Kryptos", "CIA", "unsolved cipher"]
+  },
+  {
+    "title": "CIA Museum: Kryptos",
+    "url": "https://www.cia.gov/legacy/museum/artifact/kryptos/",
+    "publisher": "Central Intelligence Agency",
+    "category": "Famous Cipher",
+    "description": "Museum entry describing Kryptos as a cryptographic artwork by James Sanborn.",
+    "tags": ["Kryptos", "James Sanborn", "cipher sculpture"]
+  },
+  {
+    "title": "FBI: The Zodiac Killer",
+    "url": "https://www.fbi.gov/news/stories/2007/march/zodiac_030207",
+    "publisher": "Federal Bureau of Investigation",
+    "category": "Famous Cipher",
+    "description": "FBI overview of the Zodiac case and the coded messages sent to newspapers.",
+    "tags": ["Zodiac", "Zodiac Killer", "cipher history"]
+  },
+  {
+    "title": "David Oranchak: Zodiac Cipher Videos",
+    "url": "https://www.youtube.com/@doranchak",
+    "publisher": "David Oranchak",
+    "category": "Video",
+    "description": "Videos about the Zodiac ciphers and related codebreaking work.",
+    "tags": ["Zodiac", "Z340", "video"]
+  },
+  {
+    "title": "Simon Singh Crypto Corner",
+    "url": "https://simonsingh.net/cryptography/",
+    "publisher": "Simon Singh",
+    "category": "Learning",
+    "description": "Cryptography articles, book material, and interactive codebreaking resources from Simon Singh.",
+    "tags": ["cryptography", "education", "The Code Book"]
+  },
+  {
+    "title": "The Black Chamber",
+    "url": "https://simonsingh.net/The_Black_Chamber/chamberguide.html",
+    "publisher": "Simon Singh",
+    "category": "Interactive",
+    "description": "Interactive classical cipher material connected to Simon Singh's cryptography resources.",
+    "tags": ["interactive", "classical ciphers", "learning"]
+  },
+  {
+    "title": "Practical Cryptography: Classical Ciphers",
+    "url": "https://practicalcryptography.com/ciphers/classical-era/",
+    "publisher": "Practical Cryptography",
+    "category": "Reference",
+    "description": "Reference material for classical cipher systems including substitution and transposition methods.",
+    "tags": ["classical ciphers", "reference", "cryptanalysis"]
+  },
+  {
+    "title": "Practical Cryptography: Cipher List",
+    "url": "https://practicalcryptography.com/ciphers/",
+    "publisher": "Practical Cryptography",
+    "category": "Reference",
+    "description": "Alphabetical and categorized list of cipher descriptions and related cryptanalysis notes.",
+    "tags": ["cipher list", "classical ciphers", "reference"]
+  },
+  {
+    "title": "dCode",
+    "url": "https://www.dcode.fr/en",
+    "publisher": "dCode",
+    "category": "Tool",
+    "description": "Large collection of online cipher tools, solvers, decoders, and identifiers.",
+    "tags": ["tools", "solver", "decoder"]
+  },
+  {
+    "title": "dCode Caesar Cipher",
+    "url": "https://www.dcode.fr/caesar-cipher",
+    "publisher": "dCode",
+    "category": "Tool",
+    "description": "Dedicated Caesar cipher encoder, decoder, and explanation page.",
+    "tags": ["Caesar", "shift cipher", "tool"]
+  },
+  {
+    "title": "Rumkin Ciphers and Codes",
+    "url": "https://rumkin.com/tools/cipher/",
+    "publisher": "Rumkin",
+    "category": "Tool",
+    "description": "Browser-based tools for simple text manipulation, classical ciphers, and substitution-style puzzles.",
+    "tags": ["tools", "classical ciphers", "browser"]
+  },
+  {
+    "title": "Rumkin Cryptogram Solver",
+    "url": "https://rumkin.com/tools/cipher/cryptogram-solver/",
+    "publisher": "Rumkin",
+    "category": "Tool",
+    "description": "Interactive cryptogram and simple substitution solver that runs in the browser.",
+    "tags": ["cryptogram", "substitution", "solver"]
+  },
+  {
+    "title": "quipqiup",
+    "url": "https://quipqiup.com/",
+    "publisher": "Edwin Olson",
+    "category": "Tool",
+    "description": "Automated cryptogram solver for simple substitution ciphers, including cryptoquips and patristocrats.",
+    "tags": ["substitution", "cryptogram", "solver"]
+  },
+  {
+    "title": "Boxentriq",
+    "url": "https://www.boxentriq.com/",
+    "publisher": "Boxentriq",
+    "category": "Tool",
+    "description": "Collection of codebreaking, CTF, cipher, and puzzle-solving tools.",
+    "tags": ["tools", "CTF", "codebreaking"]
+  },
+  {
+    "title": "Cryptii",
+    "url": "https://cryptii.com/",
+    "publisher": "Cryptii",
+    "category": "Tool",
+    "description": "Modular browser-based conversion, encoding, and encryption tool.",
+    "tags": ["encoding", "conversion", "encryption"]
+  },
+  {
+    "title": "National Cryptologic Museum",
+    "url": "https://www.nsa.gov/museum/",
+    "publisher": "National Security Agency",
+    "category": "Museum",
+    "description": "Official NSA museum covering cryptologic history and public education.",
+    "tags": ["museum", "cryptology", "history"]
+  },
+  {
+    "title": "Bletchley Park Learning Resources",
+    "url": "https://www.bletchleypark.org.uk/learning/learning-resources/",
+    "publisher": "Bletchley Park",
+    "category": "Learning",
+    "description": "Educational material related to codebreaking, wartime cryptanalysis, and Bletchley Park history.",
+    "tags": ["Bletchley Park", "education", "history"]
+  },
+  {
+    "title": "A Book on Classical Cryptography",
+    "url": "https://www.cipherchallenge.org/wp-content/uploads/2022/09/A-Book-on-Classical-Cryptography-by-Madness.pdf",
+    "publisher": "National Cipher Challenge",
+    "category": "Book",
+    "description": "Free PDF introduction to classical cryptography with emphasis on pen-and-paper cryptanalysis.",
+    "tags": ["book", "classical cryptography", "cryptanalysis"]
+  }
+]

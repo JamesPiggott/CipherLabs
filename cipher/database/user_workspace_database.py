@@ -9,7 +9,7 @@ class UserWorkspaceDatabase:
         query = """
         CREATE TABLE IF NOT EXISTS user_workspaces (
             id UUID PRIMARY KEY,
-            user_id INTEGER NOT NULL,
+            user_id UUID NOT NULL,
             cipher_id UUID NOT NULL,
             substitution_mapping JSONB NOT NULL DEFAULT '{}',
             notes TEXT,
@@ -23,8 +23,11 @@ class UserWorkspaceDatabase:
     def migrate_table(self):
         query = """
         ALTER TABLE user_workspaces
-        ALTER COLUMN user_id TYPE INTEGER
-        USING user_id::text::integer;
+        DROP CONSTRAINT IF EXISTS user_workspaces_user_id_cipher_id_key;
+
+        ALTER TABLE user_workspaces
+        ADD CONSTRAINT user_workspaces_user_id_cipher_id_key
+        UNIQUE(user_id, cipher_id);
         """
         db.execute(query)
 

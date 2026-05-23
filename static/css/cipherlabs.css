@@ -662,3 +662,26 @@ input::placeholder {
 .modal-backdrop.show {
     opacity: 0.75;
 }
+
+/* =========================================================
+   Resources
+   ========================================================= */
+
+.resource-reference-card {
+    border-left: 4px solid var(--cl-accent);
+}
+
+.resource-reference-title {
+    color: var(--cl-text-strong);
+    text-decoration: none;
+}
+
+.resource-reference-title:hover {
+    color: var(--cl-accent);
+    text-decoration: underline;
+}
+
+.resource-reference-card p {
+    color: var(--cl-text);
+    line-height: 1.6;
+}

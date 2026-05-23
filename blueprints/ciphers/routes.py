@@ -25,7 +25,13 @@ ciphers_blueprint = Blueprint("ciphers", __name__, template_folder="../../templa
 @ciphers_blueprint.route("/")
 def list_ciphers():
     ciphers = CipherMessageProcessor().list_ciphers()
-    return render_template("ciphers/list.html", ciphers=ciphers)
+    return render_template(
+        "ciphers/list.html",
+        ciphers=ciphers,
+        seo_title="Public Cipher Archive | CipherLabs",
+        seo_description="Browse public cipher messages and analyze them with CipherLabs cryptanalysis tools.",
+        seo_canonical=url_for("ciphers.list_ciphers", _external=True),
+    )
 
 
 @ciphers_blueprint.route("/add", methods=["GET", "POST"])
@@ -159,6 +165,31 @@ def view_cipher(cipher_id):
         mapping_confidence=mapping_confidence,
         partial_plaintext=partial_plaintext,
         workbench=workbench,
+        seo_title=f"{cipher.title} | Cipher Analysis | CipherLabs",
+        seo_description=(
+            f"Analyze the cipher message '{cipher.title}' using CipherLabs cryptanalysis tools, "
+            "including frequency analysis, Index of Coincidence, word patterns, and substitution solving."
+        ),
+        seo_type="article",
+        seo_canonical=url_for("ciphers.view_cipher", cipher_id=cipher.id, _external=True),
+        structured_data={
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            "headline": cipher.title,
+            "description": (
+                f"Cipher analysis page for {cipher.title}, including cryptanalysis tools "
+                "and guided solving workflows."
+            ),
+            "url": url_for("ciphers.view_cipher", cipher_id=cipher.id, _external=True),
+            "author": {
+                "@type": "Organization",
+                "name": "CipherLabs",
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "CipherLabs",
+            },
+        },
     )
 
 
