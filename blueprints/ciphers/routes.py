@@ -18,6 +18,7 @@ from cipher.tools.substitution_mapping_assistant import SubstitutionMappingAssis
 from cipher.tools.workbench.cipher_workbench_builder import CipherWorkbenchBuilder
 from cipher.tools.cipher_classifier import CipherClassifier
 from cipher.tools.partial_plaintext_builder import PartialPlaintextBuilder
+from cipher.tools.language_statistics_validator import LanguageStatisticsValidator
 
 ciphers_blueprint = Blueprint("ciphers", __name__, template_folder="../../templates/ciphers")
 
@@ -147,6 +148,10 @@ def view_cipher(cipher_id):
         minimum_confidence=0.75,
     )
 
+    language_statistics_validation = LanguageStatisticsValidator.analyze(
+        partial_plaintext.get("plaintext", cipher.ciphertext)
+    )
+
     return render_template(
         "ciphers/detail.html",
         cipher=cipher,
@@ -164,6 +169,7 @@ def view_cipher(cipher_id):
         cipher_classification=cipher_classification,
         mapping_confidence=mapping_confidence,
         partial_plaintext=partial_plaintext,
+        language_statistics_validation=language_statistics_validation,
         workbench=workbench,
         seo_title=f"{cipher.title} | Cipher Analysis | CipherLabs",
         seo_description=(

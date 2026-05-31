@@ -1,0 +1,11 @@
+{
+  "language": "English",
+  "ioc": 0.067,
+  "letter_frequencies": {},
+  "digrams": {},
+  "trigrams": {},
+  "quadgrams": {},
+  "ranked_digrams": ["TH", "HE", "IN", "ER", "AN", "RE", "ND", "AT", "ON", "NT", "HA", "ES", "ST", "EN", "ED", "TO", "IT", "OU", "EA", "HI", "IS", "OR", "TI", "AS", "TE"],
+  "ranked_trigrams": ["THE", "AND", "THA", "ENT", "ING", "ION", "TIO", "FOR", "NDE", "HAS"],
+  "common_words": ["THE", "OF", "AND", "TO", "A", "IN", "THAT", "IT", "IS", "I"]
+}

@@ -1,0 +1,11 @@
+{
+  "language": "German",
+  "ioc": 0.073,
+  "letter_frequencies": {},
+  "digrams": {},
+  "trigrams": {},
+  "quadgrams": {},
+  "ranked_digrams": ["ER", "EN", "CH", "DE", "EI", "TE", "IN", "ND", "IE", "GE", "ST", "NE", "BE", "ES", "UN", "RE", "AN", "HE", "AU", "NG", "SE", "IT", "DI", "IC", "SC"],
+  "ranked_trigrams": ["ICH", "EIN", "UND", "DER", "NDE", "SCH", "DIE", "DEN", "END", "CHT"],
+  "common_words": ["DER", "DIE", "UND", "DEN", "AM", "IN", "ZU", "IST", "DASS", "ES"]
+}

@@ -253,6 +253,15 @@ class CipherWorkbenchBuilder:
                 order=40,
             ),
             WorkbenchWidget(
+                widget_id="language-statistics-validation",
+                title="Language Statistics",
+                template="ciphers/workbench/widgets/_language_statistics_validation.html",
+                phase="validate",
+                description="Validate the current plaintext preview against ranked language statistics.",
+                recommended=True,
+                order=5,
+            ),
+            WorkbenchWidget(
                 widget_id="digram-similarity",
                 title="Digram Similarity",
                 template="ciphers/workbench/widgets/_digram_similarity.html",

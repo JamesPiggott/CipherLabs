@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("save-workspace");
     const saveNotesOnlyButton = document.getElementById("save-notes-only");
     const applyStrongMappingsButton = document.getElementById("apply-strong-mappings");
+    const applyStrongMappingsButton = document.getElementById("apply-strong-mappings");
+    const undoMappingButton = document.getElementById("undo-mapping-action");
+    const redoMappingButton = document.getElementById("redo-mapping-action");
     const notesField = document.getElementById("workspace-notes");
 
     const workspaceAlertBox = document.getElementById("workspace-save-alert");
@@ -66,6 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const notesAlertBox = document.getElementById("workspace-notes-alert");
 
     let pendingMapping = null;
+
+    const mappingUndoStack = [];
+    const mappingRedoStack = [];
 
     function buildMapping() {
         const mapping = {};
@@ -80,6 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         return mapping;
+    }
+
+    function cloneMapping(mapping) {
+        return JSON.parse(JSON.stringify(mapping || {}));
     }
 
     function updatePreview() {
@@ -142,6 +152,83 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         workspaceUnsavedAlertBox.classList.add("d-none");
+    }
+
+    function updateUndoRedoButtons() {
+        if (undoMappingButton) {
+            undoMappingButton.disabled = mappingUndoStack.length === 0;
+        }
+
+        if (redoMappingButton) {
+            redoMappingButton.disabled = mappingRedoStack.length === 0;
+        }
+    }
+
+    function pushUndoState() {
+        mappingUndoStack.push(cloneMapping(buildMapping()));
+
+        if (mappingUndoStack.length > 100) {
+            mappingUndoStack.shift();
+        }
+
+        mappingRedoStack.length = 0;
+
+        updateUndoRedoButtons();
+    }
+
+    function setMappingLetterWithoutConflictCheck(cipherLetter, plainLetter) {
+        const input = document.querySelector(
+            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
+        );
+
+        if (!input) {
+            return;
+        }
+
+        input.value = String(plainLetter).trim().toUpperCase();
+    }
+
+    function applyFullMapping(mapping) {
+        inputs.forEach((input) => {
+            input.value = "";
+        });
+
+        Object.keys(mapping).forEach((cipherLetter) => {
+            setMappingLetterWithoutConflictCheck(
+                cipherLetter,
+                mapping[cipherLetter]
+            );
+        });
+
+        updatePreview();
+        showUnsavedWorkspaceNotice();
+        updateUndoRedoButtons();
+    }
+
+    function undoLastMappingAction() {
+        if (mappingUndoStack.length === 0) {
+            return;
+        }
+
+        const currentState = cloneMapping(buildMapping());
+        mappingRedoStack.push(currentState);
+
+        const previousState = mappingUndoStack.pop();
+
+        applyFullMapping(previousState);
+    }
+
+    function redoLastMappingAction() {
+        if (mappingRedoStack.length === 0) {
+            return;
+        }
+
+        const currentState = cloneMapping(buildMapping());
+        mappingUndoStack.push(currentState);
+
+        const nextState = mappingRedoStack.pop();
+
+        applyFullMapping(nextState);
     }
 
     function saveWorkspace(successMessage, alertBox) {
@@ -238,22 +325,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return conflicts;
     }
 
-    function setMappingLetterWithoutConflictCheck(cipherLetter, plainLetter) {
-        const input = document.querySelector(
-            '.substitution-input[data-cipher-letter="' + cipherLetter + '"]'
-        );
-
-        if (!input) {
-            return;
-        }
-
-        input.value = String(plainLetter).trim().toUpperCase();
-
-        input.dispatchEvent(new Event("change", { bubbles: true }));
-        input.dispatchEvent(new Event("keyup", { bubbles: true }));
-    }
-
     function applyMapping(mapping) {
+        pushUndoState();
+
         Object.keys(mapping).forEach((cipherLetter) => {
             setMappingLetterWithoutConflictCheck(
                 cipherLetter,
@@ -263,6 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updatePreview();
         showUnsavedWorkspaceNotice();
+        updateUndoRedoButtons();
     }
 
     function showMappingConflictModal(conflicts, mapping) {
@@ -311,6 +386,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     inputs.forEach((input) => {
+        input.addEventListener("focus", function () {
+            this.dataset.previousValue = this.value;
+        });
+
         input.addEventListener("keyup", function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
             updatePreview();
@@ -318,16 +397,38 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         input.addEventListener("change", function () {
+            const previousValue = this.dataset.previousValue || "";
+            const currentValue = this.value.trim().toUpperCase();
+
+            if (previousValue !== currentValue) {
+                mappingUndoStack.push(cloneMapping(buildMapping()));
+
+                if (mappingUndoStack.length > 100) {
+                    mappingUndoStack.shift();
+                }
+
+                mappingRedoStack.length = 0;
+                updateUndoRedoButtons();
+            }
+
             updatePreview();
             showUnsavedWorkspaceNotice();
+
+            this.dataset.previousValue = currentValue;
         });
     });
 
     if (clearButton) {
         clearButton.addEventListener("click", function () {
-            inputs.forEach((input) => input.value = "");
+            pushUndoState();
+
+            inputs.forEach((input) => {
+                input.value = "";
+            });
+
             updatePreview();
             showUnsavedWorkspaceNotice();
+            updateUndoRedoButtons();
         });
     }
 
@@ -407,7 +508,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    if (undoMappingButton) {
+        undoMappingButton.addEventListener("click", function () {
+            undoLastMappingAction();
+        });
+    }
+
+    if (redoMappingButton) {
+        redoMappingButton.addEventListener("click", function () {
+            redoLastMappingAction();
+        });
+    }
+
     updatePreview();
+    updateUndoRedoButtons();
 });
 </script>
 

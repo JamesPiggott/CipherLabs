@@ -1,0 +1,129 @@
+<div class="card mb-3">
+    <div class="card-header">
+        Language Statistics Validation
+    </div>
+
+    <div class="card-body">
+        <p class="text-muted">
+            This compares the current plaintext preview against available language profiles.
+            Missing datasets are shown as N/A and are not included in the combined score.
+        </p>
+
+        {% if language_statistics_validation %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Language</th>
+                            <th>Score</th>
+                            <th>Digrams</th>
+                            <th>Ranked Digrams</th>
+                            <th>Trigrams</th>
+                            <th>Ranked Trigrams</th>
+                            <th>Quadgrams</th>
+                            <th>Common Words</th>
+                            <th>IoC</th>
+                            <th>Data</th>
+                            <th>Signals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in language_statistics_validation %}
+                            <tr>
+                                <td class="fw-semibold">{{ item.language }}</td>
+
+                                <td style="min-width: 160px;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="mapping-confidence-bar">
+                                            <div class="mapping-confidence-fill mapping-confidence-strong"
+                                                 style="width: {{ item.score_percent }}%;">
+                                            </div>
+                                        </div>
+                                        <span class="small">{{ item.score_percent }}%</span>
+                                    </div>
+                                </td>
+
+                                <td class="small">
+                                    {% if item.digrams_score.available %}
+                                        {{ item.digrams_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.digrams_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.ranked_digrams_score.available %}
+                                        {{ item.ranked_digrams_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.ranked_digrams_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.trigrams_score.available %}
+                                        {{ item.trigrams_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.trigrams_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.ranked_trigrams_score.available %}
+                                        {{ item.ranked_trigrams_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.ranked_trigrams_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.quadgrams_score.available %}
+                                        {{ item.quadgrams_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.quadgrams_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.common_word_score.available %}
+                                        {{ item.common_word_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.common_word_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {% if item.ioc_score.available %}
+                                        {{ item.ioc_score.display }}
+                                    {% else %}
+                                        <span class="text-muted" title="{{ item.ioc_score.reason }}">N/A</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="small">
+                                    {{ item.available_datasets }} available<br>
+                                    <span class="text-muted">
+                                        {{ item.missing_datasets }} missing
+                                    </span>
+                                </td>
+
+                                <td class="small">
+                                    {% if item.signals %}
+                                        {% for signal in item.signals %}
+                                            <div>{{ signal }}</div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">No strong signals</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning mb-0">
+                No validation data is available.
+            </div>
+        {% endif %}
+    </div>
+</div>

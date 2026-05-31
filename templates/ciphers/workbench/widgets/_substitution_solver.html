@@ -50,15 +50,33 @@
             </table>
         </div>
 
-        <div class="d-flex gap-2 mb-3">
+        <div class="d-flex flex-wrap gap-2 mb-3">
             {% if current_user.is_authenticated %}
-                <button type="button" class="btn btn-primary btn-sm" id="save-workspace">
+                <button type="button"
+                        class="btn btn-primary btn-sm"
+                        id="save-workspace">
                     Save Workspace
                 </button>
             {% endif %}
 
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="clear-substitution-map">
+            <button type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    id="clear-substitution-map">
                 Clear Mapping
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-warning btn-sm"
+                    id="undo-mapping-action"
+                    disabled>
+                Undo
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-info btn-sm"
+                    id="redo-mapping-action"
+                    disabled>
+                Redo
             </button>
         </div>
 
