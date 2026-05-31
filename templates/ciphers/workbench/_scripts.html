@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clearButton = document.getElementById("clear-substitution-map");
     const saveButton = document.getElementById("save-workspace");
     const saveNotesOnlyButton = document.getElementById("save-notes-only");
+    const applyStrongMappingsButton = document.getElementById("apply-strong-mappings");
     const notesField = document.getElementById("workspace-notes");
 
     const workspaceAlertBox = document.getElementById("workspace-save-alert");
@@ -364,6 +365,27 @@ document.addEventListener("DOMContentLoaded", function () {
             applyMappingWithConflictCheck(mapping);
         });
     });
+
+    if (applyStrongMappingsButton) {
+        applyStrongMappingsButton.addEventListener("click", function () {
+            const mapping = {};
+
+            document.querySelectorAll('[data-mapping-tier="strong"]').forEach((row) => {
+                const cipherLetter = row.getAttribute("data-cipher-letter");
+                const plainLetter = row.getAttribute("data-plain-letter");
+
+                if (cipherLetter && plainLetter) {
+                    mapping[cipherLetter] = plainLetter;
+                }
+            });
+
+            if (Object.keys(mapping).length === 0) {
+                return;
+            }
+
+            applyMappingWithConflictCheck(mapping);
+        });
+    }
 
     const confirmConflictButton = document.getElementById("confirm-conflicting-mapping");
 

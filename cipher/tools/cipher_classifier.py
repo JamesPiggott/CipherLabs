@@ -132,7 +132,7 @@ class CipherClassifier:
                 "next_actions": CipherClassifier.get_next_actions(primary_type),
             }
 
-        if ioc < 0.045 or repeated_sequences >= 2:
+        if (len(letters) >= 20 and ioc < 0.045) or repeated_sequences >= 2:
             primary_type = "Possible polyalphabetic cipher"
 
             return {

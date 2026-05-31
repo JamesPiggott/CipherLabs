@@ -24,6 +24,20 @@
                 </div>
             </div>
 
+            {% if mapping_confidence.strong_count > 0 %}
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            id="apply-strong-mappings">
+                        Apply Strong Mappings
+                    </button>
+
+                    <span class="text-muted small">
+                        Applies only mappings marked as strong confidence.
+                    </span>
+                </div>
+            {% endif %}
+
             <div class="table-responsive">
                 <table class="table table-sm align-middle mb-0">
                     <thead>
@@ -37,7 +51,9 @@
                     </thead>
                     <tbody>
                         {% for item in mapping_confidence["items"] %}
-                            <tr>
+                            <tr data-mapping-tier="{{ item.tier }}"
+                                data-cipher-letter="{{ item.cipher_letter }}"
+                                data-plain-letter="{{ item.plain_letter }}">
                                 <td class="fw-semibold">{{ item.cipher_letter }}</td>
                                 <td class="fw-semibold">{{ item.plain_letter }}</td>
                                 <td style="min-width: 180px;">
