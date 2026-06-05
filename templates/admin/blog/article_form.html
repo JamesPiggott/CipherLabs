@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.article-form-wrapper {
+    max-width: 1100px;
+    margin: 2rem auto 4rem auto;
+}
+
+.article-form-title {
+    color: #f8fafc;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.article-form-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.article-form-card label {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.article-form-card .form-control,
+.article-form-card .form-select {
+    background: #020617;
+    color: #f8fafc;
+    border: 1px solid #1e293b;
+}
+
+.article-form-card .form-control:focus,
+.article-form-card .form-select:focus {
+    background: #020617;
+    color: #f8fafc;
+    border-color: #c9a96e;
+    box-shadow: 0 0 0 0.15rem rgba(201, 169, 110, 0.2);
+}
+
+.article-help {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.article-options-toggle {
+    width: 100%;
+    background: transparent;
+    color: #c9a96e;
+    border: 1px solid #1e293b;
+    border-radius: 0.6rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.article-options-toggle:hover {
+    background: rgba(201, 169, 110, 0.08);
+}
+
+.article-options-chevron {
+    float: right;
+    transition: transform 0.2s ease;
+}
+
+.article-options-toggle[aria-expanded="true"] .article-options-chevron {
+    transform: rotate(180deg);
+}
+
+.tox .tox-dialog__body-content .tox-textarea {
+    background: #111827 !important;
+    color: #f9fafb !important;
+    caret-color: #f9fafb !important;
+    font-family: Consolas, Monaco, monospace !important;
+    line-height: 1.5 !important;
+}
+
+.tox .tox-dialog__body-content .tox-textarea::selection {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+</style>
+
+<div class="article-form-wrapper">
+    <h1 class="article-form-title">
+        {% if article %}Edit Article{% else %}Add Article{% endif %}
+    </h1>
+
+    <form method="post" action="{{ form_action }}" class="article-form-card">
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Featured Image URL</label>
+                <input name="featured_image"
+                       class="form-control"
+                       value="{{ article.featured_image if article else '' }}"
+                       placeholder="/static/blog_images/example.jpg">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Author</label>
+                <input name="author"
+                       class="form-control"
+                       value="{{ article.author if article else '' }}"
+                       placeholder="CipherLabs Team">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select">
+                    <option value="draft" {% if article and article.status == 'draft' %}selected{% endif %}>Draft</option>
+                    <option value="published" {% if article and article.status == 'published' %}selected{% endif %}>Published</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input name="title"
+                   class="form-control"
+                   value="{{ article.title if article else '' }}"
+                   required>
+        </div>
+
+        <button class="article-options-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#articleAdvancedFields"
+                aria-expanded="false"
+                aria-controls="articleAdvancedFields">
+            Advanced article fields
+            <span class="article-options-chevron">⌄</span>
+        </button>
+
+        <div class="collapse" id="articleAdvancedFields">
+            <div class="mb-3">
+                <label class="form-label">Slug</label>
+                <input name="slug"
+                       class="form-control"
+                       value="{{ article.slug if article else '' }}">
+                <small class="article-help">Leave empty to generate automatically.</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Summary</label>
+                <textarea name="summary"
+                          class="form-control"
+                          rows="3">{{ article.summary if article else '' }}</textarea>
+                <small class="article-help">Used as article teaser text and automatic SEO description.</small>
+            </div>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label class="form-label">Content</label>
+            <textarea id="content_html"
+                      name="content_html"
+                      class="form-control"
+                      rows="15">{{ article.content_html if article else '' }}</textarea>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('admin_blog.articles') }}" class="btn btn-outline-light">
+                Cancel
+            </a>
+            <button class="btn btn-primary">
+                Save Article
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/static/tinymce/tinymce.min.js"></script>
+<script>
+function ensureTiny(targetId) {
+  const inst = tinymce.get(targetId);
+  if (inst) return inst;
+
+  return tinymce.init({
+    selector: `#${targetId}`,
+    height: 900,
+    min_height: 600,
+    resize: true,
+
+    plugins: 'advlist autolink lists link image media table code fullscreen help wordcount',
+    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | ' +
+             'alignleft aligncenter alignright alignjustify | ' +
+             'bullist numlist outdent indent | image media table | code fullscreen help',
+    menubar: 'file edit view insert format tools table help',
+
+    relative_urls: false,
+    remove_script_host: false,
+    convert_urls: true,
+
+    content_style: 'html,body{background:#fff;color:#111;line-height:1.6;padding:12px;}',
+
+    promotion: false,
+    automatic_uploads: true,
+    file_picker_types: 'image media',
+    media_live_embeds: true,
+    media_dimensions: true,
+    media_poster: true
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  ensureTiny('content_html');
+});
+</script>
+
+{% endblock %}

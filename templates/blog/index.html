@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.blog-header {
+    margin: 2rem 0 2rem 0;
+}
+
+.blog-title {
+    color: #f8fafc;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.blog-count {
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+}
+
+.blog-search-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    max-width: 720px;
+}
+
+.blog-search-row input {
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #1e293b;
+    border-radius: 0.5rem;
+    height: 48px;
+}
+
+.blog-search-row input::placeholder {
+    color: #94a3b8;
+}
+
+.blog-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #dbe4ee;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
+    padding: 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    background: #e5e7eb;
+}
+
+.blog-card-title {
+    color: #c9a96e;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+.blog-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.blog-card-title a:hover {
+    color: #e6c992;
+    text-decoration: none;
+}
+
+.blog-card-divider {
+    border-top: 1px solid #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.blog-card-date {
+    color: #111827;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.blog-card-summary {
+    color: #111827;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+}
+
+.blog-read-more {
+    margin-top: auto;
+    width: fit-content;
+    background: #c9a96e;
+    color: #111827;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.4rem;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 3px 10px rgba(201, 169, 110, 0.25);
+}
+
+.blog-read-more:hover {
+    background: #e6c992;
+    color: #111827;
+}
+
+.blog-empty {
+    color: #f8fafc;
+}
+</style>
+
+<div class="blog-header">
+    <h1 class="blog-title">Search Blog</h1>
+
+    <p class="blog-count">
+        {{ articles|length }} articles found
+    </p>
+
+    <form method="get"
+          action="{{ url_for('blog.blog_search') }}"
+          class="blog-search-row">
+
+        <input type="text"
+               name="q"
+               class="form-control"
+               placeholder="Search articles">
+    </form>
+</div>
+
+<div class="row g-4">
+    {% for article in articles %}
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <article class="blog-card">
+
+                {% if article.featured_image %}
+                    <img src="{{ article.featured_image }}"
+                         alt="{{ article.title }}"
+                         class="blog-card-image">
+                {% endif %}
+
+                <h2 class="blog-card-title">
+                    <a href="{{ url_for('blog.blog_article', slug=article.slug) }}">
+                        {{ article.title }}
+                    </a>
+                </h2>
+
+                <div class="blog-card-divider"></div>
+
+                <div class="blog-card-date">
+                    {{ article.publication_date.strftime('%Y-%m-%d') if article.publication_date else '' }}
+                </div>
+
+                {% if article.summary %}
+                    <p class="blog-card-summary">
+                        {{ article.summary }}
+                    </p>
+                {% endif %}
+
+                <a class="blog-read-more"
+                   href="{{ url_for('blog.blog_article', slug=article.slug) }}">
+                    Read more →
+                </a>
+
+            </article>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <p class="blog-empty">No published articles yet.</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

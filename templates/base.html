@@ -77,11 +77,13 @@
 
         <div class="navbar-nav ms-auto">
             <a class="nav-link" href="{{ url_for('ciphers.list_ciphers') }}">Ciphers</a>
+            <a class="nav-link" href="{{ url_for('blog.blog_index') }}">Blog</a>
             <a class="nav-link" href="{{ url_for('main.glossary') }}">Glossary</a>
             <a class="nav-link" href="{{ url_for('main.resources') }}">Resources</a>
 
             {% if current_user.is_authenticated and current_user.is_admin %}
                 <a class="nav-link" href="{{ url_for('admin.users') }}">Admin</a>
+                <a class="nav-link" href="{{ url_for('admin_blog.articles') }}">Blog Admin</a>
             {% endif %}
 
             {% if current_user.is_authenticated %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Manage Blog Articles</h1>
+        <a href="{{ url_for('admin_blog.add_article') }}" class="btn btn-primary">Add Article</a>
+    </div>
+
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Slug</th>
+                <th>Publication Date</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.status }}</td>
+                    <td>{{ article.slug }}</td>
+                    <td>{{ article.publication_date or "-" }}</td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-2 flex-wrap">
+                            <a href="{{ url_for('admin_blog.edit_article', article_id=article.id) }}"
+                               class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+
+                            {% if article.status != "published" %}
+                                <form method="post" action="{{ url_for('admin_blog.publish_article', article_id=article.id) }}">
+                                    <button class="btn btn-sm btn-outline-success">Publish</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{{ url_for('admin_blog.unpublish_article', article_id=article.id) }}">
+                                    <button class="btn btn-sm btn-outline-warning">Unpublish</button>
+                                </form>
+                            {% endif %}
+
+                            <form method="post"
+                                  action="{{ url_for('admin_blog.delete_article', article_id=article.id) }}"
+                                  onsubmit="return confirm('Delete this article?')">
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No articles yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

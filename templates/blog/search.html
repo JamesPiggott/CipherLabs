@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1>Search Blog</h1>
+
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search articles">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    {% for article in articles %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="h5">
+                    <a href="{{ url_for('blog.blog_article', slug=article.slug) }}">
+                        {{ article.title }}
+                    </a>
+                </h2>
+                <p>{{ article.summary }}</p>
+            </div>
+        </div>
+    {% else %}
+        {% if query %}
+            <p>No articles found.</p>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

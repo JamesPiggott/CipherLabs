@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.blog-article-wrapper {
+    max-width: 960px;
+    margin: 2rem auto 4rem auto;
+}
+
+.blog-article-header {
+    margin-bottom: 2rem;
+}
+
+.blog-article-title {
+    color: #f8fafc;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+}
+
+.blog-article-meta {
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+.blog-article-summary {
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    max-width: 840px;
+}
+
+.blog-article-hero {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    border-radius: 1rem;
+    margin: 1.5rem 0 2.5rem 0;
+    border: 1px solid #1e293b;
+    background: #020617;
+}
+
+.blog-article-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Article body */
+.blog-content {
+    color: #dbeafe;
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 860px;
+}
+
+.blog-content h1 {
+    display: none;
+}
+
+.blog-content h2 {
+    color: #f8fafc;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 2.4rem;
+    margin-bottom: 0.8rem;
+}
+
+.blog-content h3 {
+    color: #f8fafc;
+    font-size: 1.35rem;
+    font-weight: 750;
+    margin-top: 2rem;
+    margin-bottom: 0.65rem;
+}
+
+.blog-content p {
+    margin-bottom: 1rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+.blog-content li {
+    margin-bottom: 0.25rem;
+}
+
+.blog-content pre {
+    background: #020617;
+    border: 1px solid #1e293b;
+    color: #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0 1.25rem 0;
+    font-size: 0.9rem;
+}
+
+.blog-content code {
+    color: #e2e8f0;
+    background: #020617;
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.3rem;
+}
+
+.blog-content table {
+    width: 100%;
+    margin: 1.25rem 0;
+    border-collapse: collapse;
+    color: #e2e8f0;
+}
+
+.blog-content th,
+.blog-content td {
+    border: 1px solid #1e293b;
+    padding: 0.75rem;
+}
+
+.blog-content th {
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+.blog-content blockquote {
+    border-left: 4px solid #c9a96e;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    background: rgba(201, 169, 110, 0.08);
+    color: #f8fafc;
+    border-radius: 0.4rem;
+}
+</style>
+
+<article class="blog-article-wrapper">
+
+    <header class="blog-article-header">
+        <h1 class="blog-article-title">{{ article.title }}</h1>
+
+        <div class="blog-article-meta">
+            {{ article.publication_date.strftime('%Y-%m-%d') if article.publication_date else '' }}
+            {% if article.author %}
+                · {{ article.author }}
+            {% endif %}
+        </div>
+
+        {% if article.summary %}
+            <p class="blog-article-summary">
+                {{ article.summary }}
+            </p>
+        {% endif %}
+
+        {% if article.featured_image %}
+            <div class="blog-article-hero">
+                <img src="{{ article.featured_image }}" alt="{{ article.title }}">
+            </div>
+        {% endif %}
+    </header>
+
+    <div class="blog-content">
+        {{ article.content_html | safe }}
+    </div>
+
+</article>
+
+{% endblock %}

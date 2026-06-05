@@ -4,6 +4,7 @@ from cipher.database.user_workspace_database import UserWorkspaceDatabase
 from cipher.processor.user_workspace_processor import UserWorkspaceProcessor
 from core.users.processor.user_processor import UserProcessor
 from settings.processor.app_settings_processor import AppSettingsProcessor
+from cipher.blog.processor.blog_article_processor import BlogArticleProcessor
 
 
 def ensure_database_tables_exist():
@@ -15,6 +16,7 @@ def ensure_database_tables_exist():
         AppSettingsProcessor().create_table()
         CipherMessageDatabase().create_table()
         UserWorkspaceDatabase().create_table()
+        BlogArticleProcessor().create_table()
 
     print("Database tables checked successfully.")
 
